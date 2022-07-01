@@ -44,7 +44,12 @@ export default {
         e.layer.setStyle({ pmIgnore: false });
         L.PM.reInitLayer(e.layer);
       });
-      //   L.marker([[51.50915, -0.096112]], { pmIgnore: true }).addTo(this.map);
+      this.map.pm.addControls({
+        position: "topleft",
+      });
+    //   this.map.pm.removeControls();
+    // this.map.pm.toggleControls();
+    this.map.pm.controlsVisible();
     },
   },
 };
