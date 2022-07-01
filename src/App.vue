@@ -1,23 +1,24 @@
 <template>
   <v-app>
     <v-app-bar app dark>
-      <v-spacer></v-spacer>
+      <v-toolbar>
+        <v-toolbar-title>Geoman Leaflet Ultimate</v-toolbar-title>
+      </v-toolbar>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <map-component></map-component>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-
+import MapComponent from "./components/MapComponent.vue";
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    MapComponent,
   },
 
   data: () => ({

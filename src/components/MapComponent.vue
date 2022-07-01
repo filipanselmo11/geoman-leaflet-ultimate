@@ -37,6 +37,14 @@ export default {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
+      L.marker([51.50915, -0.096112], { pmIgnore: true }).addTo(this.map);
+      L.PM.setOptIn(true);
+      L.PM.setOptIn(false);
+      this.map.on("pm:create", (e) => {
+        e.layer.setStyle({ pmIgnore: false });
+        L.PM.reInitLayer(e.layer);
+      });
+      //   L.marker([[51.50915, -0.096112]], { pmIgnore: true }).addTo(this.map);
     },
   },
 };
