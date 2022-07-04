@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <v-card>
+    <div id="sidebar" class="leaflet-sidebar">
+      <sidebar-menu-component></sidebar-menu-component>
+    </div>
       <div id="map"></div>
     </v-card>
   </v-container>
@@ -13,6 +16,7 @@ import "leaflet-sidebar-v2";
 import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import SidebarMenuComponent from './SidebarMenuComponent.vue';
 
 const L = window["L"];
 
@@ -37,6 +41,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
+  components: { SidebarMenuComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
