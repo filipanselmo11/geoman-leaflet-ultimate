@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-card>
-    <div id="sidebar" class="leaflet-sidebar">
-      <sidebar-menu-component></sidebar-menu-component>
-    </div>
+      <div id="sidebar" class="leaflet-sidebar">
+        <sidebar-menu-component></sidebar-menu-component>
+      </div>
       <div id="map"></div>
     </v-card>
   </v-container>
@@ -16,7 +16,7 @@ import "leaflet-sidebar-v2";
 import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import SidebarMenuComponent from './SidebarMenuComponent.vue';
+import SidebarMenuComponent from "./SidebarMenuComponent.vue";
 
 const L = window["L"];
 
@@ -72,10 +72,10 @@ export default {
       // L.marker([51.50915, -0.096112], { pmIgnore: true }).addTo(this.map);
       L.PM.setOptIn(true);
       L.PM.setOptIn(false);
-      this.map.on("pm:create", (e) => {
-        e.layer.setStyle({ pmIgnore: false });
-        L.PM.reInitLayer(e.layer);
-      });
+      // this.map.on("pm:create", (e) => {
+      //   e.layer.setStyle({ pmIgnore: false });
+      //   L.PM.reInitLayer(e.layer);
+      // });
       this.map.pm.addControls({
         position: "topleft",
         drawMarker: false,
@@ -83,7 +83,7 @@ export default {
         drawPolyline: false,
         drawCircle: true,
         editPolygon: true,
-        deleteLayer: false,
+        deleteLayer: true,
         drawRectangle: true,
         dragMode: false,
         cutPolygon: false,
@@ -91,14 +91,92 @@ export default {
         drawText: false,
         rotateMode: false,
       });
-      this.map.pm.setGlobalOptions({
-        allowSelfIntersection: false,
-        finishOn: "dblclick",
-      });
+      // this.map.pm.setGlobalOptions({
+      //   allowSelfIntersection: false,
+      //   finishOn: "dblclick",
+      // });
       //   this.map.pm.removeControls();
       // this.map.pm.toggleControls();
       this.map.pm.controlsVisible();
       // this.layerControl = L.control.layers()
+      this.map.on("pm:drawstart", (e) => {
+        this.logEvent(e);
+        var layer = e.workingLayer;
+        layer.on("pm:vertexadded", this.logEvent);
+        layer.on("pm:snapdrag", this.logEvent);
+        layer.on("pm:snap", this.logEvent);
+        layer.on("pm:unsnap", this.logEvent);
+        layer.on("pm:centerplaced", this.logEvent);
+      });
+      this.map.on("pm:drawend", this.logEvent);
+      this.map.on("pm:create", (e) => {
+        this.logEvent(e);
+        var layer = e.layer;
+        this.map.pm.disableDraw();
+        layer.pm.enable({
+          allowSelfIntersection: false,
+        });
+
+        //Edit Event
+        layer.on("pm:edit", this.logEvent);
+        layer.on("pm:update", this.logEvent);
+        layer.on("pm:enable", this.logEvent);
+        layer.on("pm:disable", this.logEvent);
+        layer.on("pm:vertexadded", this.logEvent);
+        layer.on("pm:vertexremoved", this.logEvent);
+        layer.on("pm:markerdragstart", this.logEvent);
+        layer.on("pm:markerdrag", this.logEvent);
+        layer.on("pm:markerdragend", this.logEvent);
+        layer.on("pm:snap", this.logEvent);
+        layer.on("pm:snapdrag", this.logEvent);
+        layer.on("pm:unsnap", this.logEvent);
+        layer.on("pm:intersect", this.logEvent);
+        layer.on("pm:centerplaced", this.logEvent);
+
+        //Drag Event
+        layer.on("pm:dragstart", this.logEvent);
+        layer.on("pm:drag", this.logEvent);
+        layer.on("pm:dragend", this.logEvent);
+
+        //Cut Event
+        layer.on("pm:cut", this.logEvent);
+
+        //Remove Event
+        layer.on("pm:remove", this.logEvent);
+      });
+
+      //Toggle mode events
+      this.map.on("pm:globaleditmodetoggled", this.logEvent);
+      this.map.on("pm:globaldragmodetoggled", this.logEvent);
+      this.map.on("pm:globalremovalmodetoggled", this.logEvent);
+      this.map.on("pm:globaldrawmodetoggled", this.logEvent);
+      this.map.on("pm:globalcutmodetoggled", this.logEvent);
+
+      //Remove Event
+      this.map.on("pm:remove", this.logEvent);
+      this.map.on("layerremove", this.logEvent);
+
+      //Cut event
+      this.map.on("pm:cut", this.logEvent);
+
+      this.map.on("pm:create", (e) => {
+        var layer = e.layer;
+        this.setPopup(layer);
+        layer.on("pm:update", (e) => {
+          this.setPopup(e.layer);
+        });
+      });
+    },
+    logEvent(e) {
+      console.log("Log Event ", e);
+    },
+    makePopupContent(feature) {
+      return `${feature.geometry.coordinates}`;
+    },
+    setPopup(layer) {
+      var feature = layer.toGeoJSON();
+      var coords = this.makePopupContent(feature);
+      layer.bindPopup(coords);
     },
   },
 };
