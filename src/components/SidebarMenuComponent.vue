@@ -58,7 +58,7 @@ export default {
     //     }
     menuButtonClicked(e) {
       this.$emit("menu-button-clicked", e);
-      console.log("Console log do componente filho ", e);
+      // console.log("Console log do componente filho ", e);
     },
   },
 };

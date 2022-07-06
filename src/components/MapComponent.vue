@@ -2,7 +2,7 @@
   <v-container>
     <v-card>
       <div id="sidebar" class="leaflet-sidebar">
-        <sidebar-menu-component></sidebar-menu-component>
+        <sidebar-menu-component @menu-button-clicked="menuButtonClicked"></sidebar-menu-component>
       </div>
       <div id="map"></div>
     </v-card>
@@ -91,10 +91,10 @@ export default {
         drawText: false,
         rotateMode: false,
       });
-      // this.map.pm.setGlobalOptions({
-      //   allowSelfIntersection: false,
-      //   finishOn: "dblclick",
-      // });
+      this.map.pm.setGlobalOptions({
+        allowSelfIntersection: false,
+        finishOn: "dblclick",
+      });
       //   this.map.pm.removeControls();
       // this.map.pm.toggleControls();
       this.map.pm.controlsVisible();
@@ -177,6 +177,9 @@ export default {
       var feature = layer.toGeoJSON();
       var coords = this.makePopupContent(feature);
       layer.bindPopup(coords);
+    },
+    menuButtonClicked() {
+      alert("Olá, você me clicou");
     },
   },
 };
