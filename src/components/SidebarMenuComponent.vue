@@ -13,7 +13,6 @@
                 <template v-slot:activator="{ on }">
                   <v-hover v-slot="{ hover }">
                     <v-btn
-                      id="menuButton"
                       @click="menuButtonClicked"
                       small
                       v-on="on"

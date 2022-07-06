@@ -77,6 +77,7 @@ export default {
     initMap() {
       this.map = L.map("map", { pmIgnore: false }).setView([-25.441105, -49.276855], 13);
       this.rightSidebar.addTo(this.map);
+      console.log("Right Side bar ", this.rightSidebar);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
@@ -98,7 +99,7 @@ export default {
         customControls: true,
         oneBlock: false,
       });
-      this.customToolbarControl();
+      // this.customToolbarControl();
       this.CPDrawControl();
 
       this.map.on("pm:actionclick", (e) => {
@@ -185,44 +186,44 @@ export default {
       // });
       // this.customToolbarControl();
     },
-    customToolbarControl() {
-      this.map.pm.Toolbar.createCustomControl({
-        name: "alertBox",
-        block: "custom",
-        className: "leaflet-pm-icon-marker xyz-class",
-        title: "Count layers",
-        onClick: () => {
-          alert(
-            "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
-          );
-        },
-        toggle: false,
-      });
-      // var markerGroup = L.layerGroup([
-      //   L.marker([-25.475835283800933, -49.29118248101322]), L.marker([-25.438572155015283, -49.276859296276015]),
-      //   L.marker([-25.440254804399956, -49.24944010186119]), L.marker([-25.41767080051347, -49.20108745976523])
-      // ]);
-      // var toggle = L.easyButton({
-      //   states:[{
-      //     stateName: 'add-markers',
-      //     icon: 'fa-map-marker',
-      //     title: 'add random markers',
-      //     onClick:(control) => {
-      //       this.map.addLayer(markerGroup);
-      //       control.state('remove-markers');
-      //     }
-      //   }, {
-      //     icon: 'fa-undo',
-      //     stateName: 'remove-markers',
-      //     onClick: (control) => {
-      //       this.map.removeLayer(markerGroup);
-      //       control.state('add-markers');
-      //     },
-      //     title: 'remove markers'
-      //   }]
-      // });
-      // toggle.addTo(this.map);
-    },
+    // customToolbarControl() {
+    // this.map.pm.Toolbar.createCustomControl({
+    //   name: "alertBox",
+    //   block: "custom",
+    //   className: "leaflet-pm-icon-marker xyz-class",
+    //   title: "Count layers",
+    //   onClick: () => {
+    //     alert(
+    //       "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
+    //     );
+    //   },
+    //   toggle: false,
+    // });
+    // var markerGroup = L.layerGroup([
+    //   L.marker([-25.475835283800933, -49.29118248101322]), L.marker([-25.438572155015283, -49.276859296276015]),
+    //   L.marker([-25.440254804399956, -49.24944010186119]), L.marker([-25.41767080051347, -49.20108745976523])
+    // ]);
+    // var toggle = L.easyButton({
+    //   states:[{
+    //     stateName: 'add-markers',
+    //     icon: 'fa-map-marker',
+    //     title: 'add random markers',
+    //     onClick:(control) => {
+    //       this.map.addLayer(markerGroup);
+    //       control.state('remove-markers');
+    //     }
+    //   }, {
+    //     icon: 'fa-undo',
+    //     stateName: 'remove-markers',
+    //     onClick: (control) => {
+    //       this.map.removeLayer(markerGroup);
+    //       control.state('add-markers');
+    //     },
+    //     title: 'remove markers'
+    //   }]
+    // });
+    // toggle.addTo(this.map);
+    // },
     CPDrawControl() {
       this.map.pm.Toolbar.copyDrawControl("Rectangle", {
         name: "RectangleCopy",
@@ -247,8 +248,25 @@ export default {
       var coords = this.makePopupContent(feature);
       layer.bindPopup(coords);
     },
+
     menuButtonClicked() {
-      this.customToolbarControl();
+      console.log("Funfou");
+      // this.map.pm("pm:create", (e) => {
+      //   console.log(e.layer);
+      // });
+      // this.map.on("pm:buttonclick", (e) => {
+      //   console.log("PM BUTTON CLICK ", e);
+      // });
+      // this.map.pm.Toolbar.createCustomControl({
+      //   name: "boxAlert",
+      //   title: "Count layers",
+      //   onClick: () => {
+      //     alert(
+      //       "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
+      //     );
+      //   },
+      //   toggle: false,
+      // });
     },
   },
 };
