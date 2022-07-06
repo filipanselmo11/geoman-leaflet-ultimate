@@ -2,7 +2,9 @@
   <v-container>
     <v-card>
       <div id="sidebar" class="leaflet-sidebar">
-        <sidebar-menu-component @menu-button-clicked="menuButtonClicked"></sidebar-menu-component>
+        <sidebar-menu-component
+          @menu-button-clicked="menuButtonClicked"
+        ></sidebar-menu-component>
       </div>
       <div id="map"></div>
     </v-card>
@@ -19,6 +21,18 @@ import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import SidebarMenuComponent from "./SidebarMenuComponent.vue";
 
 const L = window["L"];
+
+//Copy Geoman Draw Control
+
+const _actions = [
+  {
+    text: "Custom message, with click event",
+    onClick(e) {
+      alert("click", e);
+    },
+    name: "actionName",
+  },
+];
 
 // const L = window.L;
 
@@ -70,110 +84,124 @@ export default {
       }).addTo(this.map);
 
       // L.marker([51.50915, -0.096112], { pmIgnore: true }).addTo(this.map);
-      L.PM.setOptIn(true);
-      L.PM.setOptIn(false);
+      // L.PM.setOptIn(true);
+      // L.PM.setOptIn(false);
       // this.map.on("pm:create", (e) => {
       //   e.layer.setStyle({ pmIgnore: false });
       //   L.PM.reInitLayer(e.layer);
       // });
       this.map.pm.addControls({
         position: "topleft",
-        drawMarker: false,
-        drawPolygon: true,
-        drawPolyline: false,
-        drawCircle: true,
-        editPolygon: true,
-        deleteLayer: true,
-        drawRectangle: true,
-        dragMode: false,
-        cutPolygon: false,
-        drawCircleMarker: false,
-        drawText: false,
-        rotateMode: false,
+        drawControls: true,
+        editControls: true,
+        optionsControls: true,
+        customControls: true,
+        oneBlock: false,
       });
-      this.map.pm.setGlobalOptions({
-        allowSelfIntersection: false,
-        finishOn: "dblclick",
+      this.customToolbarControl();
+      this.CPDrawControl();
+
+      this.map.on("pm:actionclick", (e) => {
+        console.log("PM ACTION CLICK ", e);
       });
+      this.map.on("pm:buttonclick", (e) => {
+        console.log("PM BUTTON CLICK ", e);
+      });
+
+      // this.map.pm.setGlobalOptions({
+      //   allowSelfIntersection: false,
+      //   finishOn: "dblclick",
+      // });
       //   this.map.pm.removeControls();
       // this.map.pm.toggleControls();
-      this.map.pm.controlsVisible();
+      // this.map.pm.controlsVisible();
       // this.layerControl = L.control.layers()
-      this.map.on("pm:drawstart", (e) => {
-        this.logEvent(e);
-        var layer = e.workingLayer;
-        layer.on("pm:vertexadded", this.logEvent);
-        layer.on("pm:snapdrag", this.logEvent);
-        layer.on("pm:snap", this.logEvent);
-        layer.on("pm:unsnap", this.logEvent);
-        layer.on("pm:centerplaced", this.logEvent);
-      });
-      this.map.on("pm:drawend", this.logEvent);
-      this.map.on("pm:create", (e) => {
-        this.logEvent(e);
-        var layer = e.layer;
-        this.map.pm.disableDraw();
-        layer.pm.enable({
-          allowSelfIntersection: false,
-        });
+      // this.map.on("pm:drawstart", (e) => {
+      //   this.logEvent(e);
+      //   var layer = e.workingLayer;
+      //   layer.on("pm:vertexadded", this.logEvent);
+      //   layer.on("pm:snapdrag", this.logEvent);
+      //   layer.on("pm:snap", this.logEvent);
+      //   layer.on("pm:unsnap", this.logEvent);
+      //   layer.on("pm:centerplaced", this.logEvent);
+      // });
+      // this.map.on("pm:drawend", this.logEvent);
+      // this.map.on("pm:create", (e) => {
+      //   this.logEvent(e);
+      //   var layer = e.layer;
+      //   this.map.pm.disableDraw();
+      //   layer.pm.enable({
+      //     allowSelfIntersection: false,
+      //   });
 
-        //Edit Event
-        layer.on("pm:edit", this.logEvent);
-        layer.on("pm:update", this.logEvent);
-        layer.on("pm:enable", this.logEvent);
-        layer.on("pm:disable", this.logEvent);
-        layer.on("pm:vertexadded", this.logEvent);
-        layer.on("pm:vertexremoved", this.logEvent);
-        layer.on("pm:markerdragstart", this.logEvent);
-        layer.on("pm:markerdrag", this.logEvent);
-        layer.on("pm:markerdragend", this.logEvent);
-        layer.on("pm:snap", this.logEvent);
-        layer.on("pm:snapdrag", this.logEvent);
-        layer.on("pm:unsnap", this.logEvent);
-        layer.on("pm:intersect", this.logEvent);
-        layer.on("pm:centerplaced", this.logEvent);
+      //   //Edit Event
+      //   layer.on("pm:edit", this.logEvent);
+      //   layer.on("pm:update", this.logEvent);
+      //   layer.on("pm:enable", this.logEvent);
+      //   layer.on("pm:disable", this.logEvent);
+      //   layer.on("pm:vertexadded", this.logEvent);
+      //   layer.on("pm:vertexremoved", this.logEvent);
+      //   layer.on("pm:markerdragstart", this.logEvent);
+      //   layer.on("pm:markerdrag", this.logEvent);
+      //   layer.on("pm:markerdragend", this.logEvent);
+      //   layer.on("pm:snap", this.logEvent);
+      //   layer.on("pm:snapdrag", this.logEvent);
+      //   layer.on("pm:unsnap", this.logEvent);
+      //   layer.on("pm:intersect", this.logEvent);
+      //   layer.on("pm:centerplaced", this.logEvent);
 
-        //Drag Event
-        layer.on("pm:dragstart", this.logEvent);
-        layer.on("pm:drag", this.logEvent);
-        layer.on("pm:dragend", this.logEvent);
+      //   //Drag Event
+      //   layer.on("pm:dragstart", this.logEvent);
+      //   layer.on("pm:drag", this.logEvent);
+      //   layer.on("pm:dragend", this.logEvent);
 
-        //Cut Event
-        layer.on("pm:cut", this.logEvent);
+      //   //Cut Event
+      //   layer.on("pm:cut", this.logEvent);
 
-        //Remove Event
-        layer.on("pm:remove", this.logEvent);
-      });
+      //   //Remove Event
+      //   layer.on("pm:remove", this.logEvent);
+      // });
 
       //Toggle mode events
-      this.map.on("pm:globaleditmodetoggled", this.logEvent);
-      this.map.on("pm:globaldragmodetoggled", this.logEvent);
-      this.map.on("pm:globalremovalmodetoggled", this.logEvent);
-      this.map.on("pm:globaldrawmodetoggled", this.logEvent);
-      this.map.on("pm:globalcutmodetoggled", this.logEvent);
+      // this.map.on("pm:globaleditmodetoggled", this.logEvent);
+      // this.map.on("pm:globaldragmodetoggled", this.logEvent);
+      // this.map.on("pm:globalremovalmodetoggled", this.logEvent);
+      // this.map.on("pm:globaldrawmodetoggled", this.logEvent);
+      // this.map.on("pm:globalcutmodetoggled", this.logEvent);
 
       //Remove Event
-      this.map.on("pm:remove", this.logEvent);
-      this.map.on("layerremove", this.logEvent);
+      // this.map.on("pm:remove", this.logEvent);
+      // this.map.on("layerremove", this.logEvent);
 
       //Cut event
-      this.map.on("pm:cut", this.logEvent);
+      // this.map.on("pm:cut", this.logEvent);
 
-      this.map.on("pm:create", (e) => {
-        var layer = e.layer;
-        this.setPopup(layer);
-        layer.on("pm:update", (e) => {
-          this.setPopup(e.layer);
-        });
-      });
+      // this.map.on("pm:create", (e) => {
+      //   var layer = e.layer;
+      //   this.setPopup(layer);
+      //   layer.on("pm:update", (e) => {
+      //     this.setPopup(e.layer);
+      //   });
+      // });
       // this.customToolbarControl();
     },
     customToolbarControl() {
+      this.map.pm.Toolbar.createCustomControl({
+        name: "alertBox",
+        block: "custom",
+        className: "leaflet-pm-icon-marker xyz-class",
+        title: "Count layers",
+        onClick: () => {
+          alert(
+            "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
+          );
+        },
+        toggle: false,
+      });
       // var markerGroup = L.layerGroup([
       //   L.marker([-25.475835283800933, -49.29118248101322]), L.marker([-25.438572155015283, -49.276859296276015]),
       //   L.marker([-25.440254804399956, -49.24944010186119]), L.marker([-25.41767080051347, -49.20108745976523])
       // ]);
-
       // var toggle = L.easyButton({
       //   states:[{
       //     stateName: 'add-markers',
@@ -195,6 +223,19 @@ export default {
       // });
       // toggle.addTo(this.map);
     },
+    CPDrawControl() {
+      this.map.pm.Toolbar.copyDrawControl("Rectangle", {
+        name: "RectangleCopy",
+        block: "custom",
+        title: "Display text on hover button",
+        actions: _actions,
+      });
+      this.map.pm.Draw.RectangleCopy.setPathOptions({ color: "green" });
+
+      this.map.pm.Toolbar.changeControlOrder(["RectangleCopy"]);
+    },
+    //Copy geoman Graw Control
+
     logEvent(e) {
       console.log("Log Event ", e);
     },
