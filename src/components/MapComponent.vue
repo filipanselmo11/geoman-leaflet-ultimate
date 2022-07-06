@@ -166,6 +166,34 @@ export default {
           this.setPopup(e.layer);
         });
       });
+      // this.customToolbarControl();
+    },
+    customToolbarControl() {
+      // var markerGroup = L.layerGroup([
+      //   L.marker([-25.475835283800933, -49.29118248101322]), L.marker([-25.438572155015283, -49.276859296276015]),
+      //   L.marker([-25.440254804399956, -49.24944010186119]), L.marker([-25.41767080051347, -49.20108745976523])
+      // ]);
+
+      // var toggle = L.easyButton({
+      //   states:[{
+      //     stateName: 'add-markers',
+      //     icon: 'fa-map-marker',
+      //     title: 'add random markers',
+      //     onClick:(control) => {
+      //       this.map.addLayer(markerGroup);
+      //       control.state('remove-markers');
+      //     }
+      //   }, {
+      //     icon: 'fa-undo',
+      //     stateName: 'remove-markers',
+      //     onClick: (control) => {
+      //       this.map.removeLayer(markerGroup);
+      //       control.state('add-markers');
+      //     },
+      //     title: 'remove markers'
+      //   }]
+      // });
+      // toggle.addTo(this.map);
     },
     logEvent(e) {
       console.log("Log Event ", e);
@@ -179,7 +207,7 @@ export default {
       layer.bindPopup(coords);
     },
     menuButtonClicked() {
-      alert("Olá, você me clicou");
+      this.customToolbarControl();
     },
   },
 };
