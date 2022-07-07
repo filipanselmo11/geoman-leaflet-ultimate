@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app dark>
       <v-toolbar>
-        <v-toolbar-title>Geoman Leaflet Ultimate</v-toolbar-title>
+        <v-toolbar-title>Geoman Leaflet Vuetify App</v-toolbar-title>
       </v-toolbar>
     </v-app-bar>
 
