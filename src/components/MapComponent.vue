@@ -77,7 +77,7 @@ export default {
     initMap() {
       this.map = L.map("map", { pmIgnore: false }).setView([-25.441105, -49.276855], 13);
       this.rightSidebar.addTo(this.map);
-      console.log("Right Side bar ", this.rightSidebar);
+      // console.log("Right Side bar ", this.rightSidebar);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
@@ -108,6 +108,8 @@ export default {
       this.map.on("pm:buttonclick", (e) => {
         console.log("PM BUTTON CLICK ", e);
       });
+
+      this.creatFunction();
 
       // this.map.pm.setGlobalOptions({
       //   allowSelfIntersection: false,
@@ -186,6 +188,17 @@ export default {
       // });
       // this.customToolbarControl();
     },
+    creatFunction() {
+      this.map.on('pm:create', (e) => {
+        var layer = e.layer;
+        console.log("LAYER ", layer);
+        if(layer instanceof L.Polygon && !(layer instanceof L.Rectangle)){
+          layer.setStyle({ color: 'green'});
+        } else if(layer instanceof L.Polyline && !(layer instanceof L.Polygon)){
+          layer.setStyle({color: 'yellow'});
+        }
+      })
+    },
     // customToolbarControl() {
     // this.map.pm.Toolbar.createCustomControl({
     //   name: "alertBox",
@@ -250,7 +263,7 @@ export default {
     },
 
     menuButtonClicked() {
-      console.log("Funfou");
+      
       // this.map.pm("pm:create", (e) => {
       //   console.log(e.layer);
       // });
