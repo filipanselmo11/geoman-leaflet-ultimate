@@ -35,6 +35,21 @@
 /* eslint-disable */
 export default {
   name: "MonitoringMenu",
+  props: ["alert", "imageAlertScreenshot"],
+  data: () => ({
+    dataAlert: false,
+    image: null,
+    eventtypes:[],
+  }),
+  watch:{
+    alert(val){
+      this.dataAlert = val;
+    },
+    imageAlertScreenshot(val){
+      this.image = val;
+    }
+  },
+  // props: ["sidebar"],
   //   props:{
   //     monitoringDialog: {
   //         type: Boolean,
@@ -50,6 +65,13 @@ export default {
   //         this.dialog = val;
   //     }
   //   },
+  // watch: {
+  //   button(val) {
+  //     if (val) {
+  //       console.log(val);
+  //     }
+  //   },
+  // },
   methods: {
     //     menuButtonClicked(e){
     //         console.log('monitoringDialogOnClick ', e);

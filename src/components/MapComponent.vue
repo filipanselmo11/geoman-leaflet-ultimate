@@ -109,7 +109,7 @@ export default {
         console.log("PM BUTTON CLICK ", e);
       });
 
-      this.creatFunction();
+      // this.creatFunction();
 
       // this.map.pm.setGlobalOptions({
       //   allowSelfIntersection: false,
@@ -191,7 +191,7 @@ export default {
     creatFunction() {
       this.map.on('pm:create', (e) => {
         var layer = e.layer;
-        console.log("LAYER ", layer);
+        // console.log("LAYER ", layer);
         if(layer instanceof L.Polygon && !(layer instanceof L.Rectangle)){
           layer.setStyle({ color: 'green'});
         } else if(layer instanceof L.Polyline && !(layer instanceof L.Polygon)){
@@ -263,7 +263,10 @@ export default {
     },
 
     menuButtonClicked() {
-      
+      this.map.on('pm:buttonclick', (e) => {
+        var layer = e.layer;
+        console.log("LAYER ", layer);
+      })
       // this.map.pm("pm:create", (e) => {
       //   console.log(e.layer);
       // });
