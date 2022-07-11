@@ -60,6 +60,7 @@ export default {
   // props:{},
   data: () => ({
     map: null,
+    tileLayer: null,
     rightSidebar: L.control.sidebar({
       autopan: false,
       closeButton: true,
@@ -78,11 +79,16 @@ export default {
       this.map = L.map("map", { pmIgnore: false }).setView([-25.441105, -49.276855], 13);
       this.rightSidebar.addTo(this.map);
       // console.log("Right Side bar ", this.rightSidebar);
-      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
+      this.tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
+        {
+          maxZoom: 20,
+          attribution:
+            '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      );
+
+      this.tileLayer.addTo(this.map);
 
       this.setDrawingTools();
 
