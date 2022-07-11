@@ -4050,7 +4050,7 @@
   "resolved" "https://registry.npmjs.org/leaflet-sidebar-v2/-/leaflet-sidebar-v2-3.2.3.tgz"
   "version" "3.2.3"
 
-"leaflet@^1.7.1":
+"leaflet@^1.8.0":
   "integrity" "sha512-gwhMjFCQiYs3x/Sf+d49f10ERXaEFCPr+nVTryhAW8DWbMGqJqt9G4XuIaHmFW08zYvhgdzqXGr8AlW8v8dQkA=="
   "resolved" "https://registry.npmjs.org/leaflet/-/leaflet-1.8.0.tgz"
   "version" "1.8.0"

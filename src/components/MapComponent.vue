@@ -78,36 +78,13 @@ export default {
       this.map = L.map("map", { pmIgnore: false }).setView([-25.441105, -49.276855], 13);
       this.rightSidebar.addTo(this.map);
       // console.log("Right Side bar ", this.rightSidebar);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
 
-      // L.marker([51.50915, -0.096112], { pmIgnore: true }).addTo(this.map);
-      // L.PM.setOptIn(true);
-      // L.PM.setOptIn(false);
-      // this.map.on("pm:create", (e) => {
-      //   e.layer.setStyle({ pmIgnore: false });
-      //   L.PM.reInitLayer(e.layer);
-      // });
-      this.map.pm.addControls({
-        position: "topleft",
-        drawControls: true,
-        editControls: true,
-        optionsControls: true,
-        customControls: true,
-        oneBlock: false,
-      });
-      // this.customToolbarControl();
-      this.CPDrawControl();
-
-      this.map.on("pm:actionclick", (e) => {
-        console.log("PM ACTION CLICK ", e);
-      });
-      this.map.on("pm:buttonclick", (e) => {
-        console.log("PM BUTTON CLICK ", e);
-      });
+      this.setDrawingTools();
 
       // this.creatFunction();
 
@@ -188,16 +165,27 @@ export default {
       // });
       // this.customToolbarControl();
     },
+
+    setDrawingTools() {
+      this.map.pm.addControls({
+        position: "topleft",
+        drawControls: true,
+        editControls: true,
+        optionsControls: true,
+        customControls: true,
+        oneBlock: false,
+      });
+    },
     creatFunction() {
-      this.map.on('pm:create', (e) => {
+      this.map.on("pm:create", (e) => {
         var layer = e.layer;
         // console.log("LAYER ", layer);
-        if(layer instanceof L.Polygon && !(layer instanceof L.Rectangle)){
-          layer.setStyle({ color: 'green'});
-        } else if(layer instanceof L.Polyline && !(layer instanceof L.Polygon)){
-          layer.setStyle({color: 'yellow'});
+        if (layer instanceof L.Polygon && !(layer instanceof L.Rectangle)) {
+          layer.setStyle({ color: "green" });
+        } else if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
+          layer.setStyle({ color: "yellow" });
         }
-      })
+      });
     },
     // customToolbarControl() {
     // this.map.pm.Toolbar.createCustomControl({
@@ -263,10 +251,10 @@ export default {
     },
 
     menuButtonClicked() {
-      this.map.on('pm:buttonclick', (e) => {
+      this.map.on("pm:buttonclick", (e) => {
         var layer = e.layer;
         console.log("LAYER ", layer);
-      })
+      });
       // this.map.pm("pm:create", (e) => {
       //   console.log(e.layer);
       // });

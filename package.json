@@ -10,7 +10,7 @@
   "dependencies": {
     "@geoman-io/leaflet-geoman-free": "^2.13.0",
     "core-js": "^3.8.3",
-    "leaflet": "^1.7.1",
+    "leaflet": "^1.8.0",
     "leaflet-sidebar-v2": "^3.2.3",
     "sidebar-v2": "^0.4.0",
     "vue": "^2.6.14",
