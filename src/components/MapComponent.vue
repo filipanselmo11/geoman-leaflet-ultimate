@@ -204,7 +204,7 @@ export default {
     },
 
     buttonBarFunction(map){
-      buttonBar.onAdd = (map) {
+      buttonBar.onAdd = (map) => {
   var div = L.DomUtil.create('div', 'myButtonBar');
   L.DomEvent.disableClickPropagation(div);
   div.innerHTML = '<div class="switch-field noselect"><div class="switch-title">MAPS</div>'
