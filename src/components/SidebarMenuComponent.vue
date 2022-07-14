@@ -18,7 +18,7 @@
                       v-on="on"
                       :color="hover ? 'accent' : 'white'"
                     >
-                      <v-icon>mdi-pencil</v-icon>
+                      <v-icon>mdi-vector-polygon</v-icon>
                     </v-btn>
                   </v-hover>
                 </template>

@@ -180,6 +180,7 @@ export default {
         optionsControls: true,
         customControls: true,
         oneBlock: false,
+        removalMode: true,
       });
     },
     creatFunction() {
