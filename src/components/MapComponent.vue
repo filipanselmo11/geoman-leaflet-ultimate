@@ -7,6 +7,7 @@
         ></sidebar-menu-component>
       </div>
       <div id="map"></div>
+      <map-modal :map-dialog="mapDialog"></map-modal>
     </v-card>
   </v-container>
 </template>
@@ -19,20 +20,11 @@ import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import SidebarMenuComponent from "./SidebarMenuComponent.vue";
+import MapModal from "./MapModal.vue";
 
 const L = window["L"];
 
 //Copy Geoman Draw Control
-
-const _actions = [
-  {
-    text: "Custom message, with click event",
-    onClick(e) {
-      alert("click", e);
-    },
-    name: "actionName",
-  },
-];
 
 // const L = window.L;
 
@@ -55,12 +47,13 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
-  components: { SidebarMenuComponent },
+  components: { SidebarMenuComponent, MapModal },
   name: "MapComponent",
   // props:{},
   data: () => ({
     map: null,
     tileLayer: null,
+    mapDialog: false,
     rightSidebar: L.control.sidebar({
       autopan: false,
       closeButton: true,
@@ -182,66 +175,39 @@ export default {
         oneBlock: false,
         removalMode: true,
       });
-    },
-    creatFunction() {
+
+      this.map.on("pm:drawstart", (e) => {
+        console.log("LAYER ", e.shape);
+      });
+
       this.map.on("pm:create", (e) => {
-        var layer = e.layer;
-        // console.log("LAYER ", layer);
-        if (layer instanceof L.Polygon && !(layer instanceof L.Rectangle)) {
-          layer.setStyle({ color: "green" });
-        } else if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
-          layer.setStyle({ color: "yellow" });
+        var shape = e.shape;
+        if (shape === "Circle") {
+          e.layer.on("click", () => {
+            this.mapDialogOnClick(e, shape);
+          });
+        }
+        if (shape === "Polygon") {
+          e.layer.on("click", () => {
+            this.mapDialogOnClick(e, shape);
+          });
+        }
+        if (shape === "Rectangle") {
+          e.layer.on("click", () => {
+            this.mapDialogOnClick(e, shape);
+          });
         }
       });
     },
-    // customToolbarControl() {
-    // this.map.pm.Toolbar.createCustomControl({
-    //   name: "alertBox",
-    //   block: "custom",
-    //   className: "leaflet-pm-icon-marker xyz-class",
-    //   title: "Count layers",
-    //   onClick: () => {
-    //     alert(
-    //       "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
-    //     );
-    //   },
-    //   toggle: false,
-    // });
-    // var markerGroup = L.layerGroup([
-    //   L.marker([-25.475835283800933, -49.29118248101322]), L.marker([-25.438572155015283, -49.276859296276015]),
-    //   L.marker([-25.440254804399956, -49.24944010186119]), L.marker([-25.41767080051347, -49.20108745976523])
-    // ]);
-    // var toggle = L.easyButton({
-    //   states:[{
-    //     stateName: 'add-markers',
-    //     icon: 'fa-map-marker',
-    //     title: 'add random markers',
-    //     onClick:(control) => {
-    //       this.map.addLayer(markerGroup);
-    //       control.state('remove-markers');
-    //     }
-    //   }, {
-    //     icon: 'fa-undo',
-    //     stateName: 'remove-markers',
-    //     onClick: (control) => {
-    //       this.map.removeLayer(markerGroup);
-    //       control.state('add-markers');
-    //     },
-    //     title: 'remove markers'
-    //   }]
-    // });
-    // toggle.addTo(this.map);
-    // },
-    CPDrawControl() {
-      this.map.pm.Toolbar.copyDrawControl("Rectangle", {
-        name: "RectangleCopy",
-        block: "custom",
-        title: "Display text on hover button",
-        actions: _actions,
-      });
-      this.map.pm.Draw.RectangleCopy.setPathOptions({ color: "green" });
 
-      this.map.pm.Toolbar.changeControlOrder(["RectangleCopy"]);
+    mapDialogOnClick(e, type) {
+      console.log("mapDialogOnClick ", e, type);
+      if (type instanceof L.Circle) {
+        this.map.setView(e.target.getLatLng());
+      } else if (type instanceof L.Polygon || type instanceof L.Rectangle) {
+        this.map.setView(e.target.getBounds().getCenter());
+      }
+      this.mapDialog = true;
     },
     //Copy geoman Graw Control
 
@@ -262,22 +228,6 @@ export default {
         var layer = e.layer;
         console.log("LAYER ", layer);
       });
-      // this.map.pm("pm:create", (e) => {
-      //   console.log(e.layer);
-      // });
-      // this.map.on("pm:buttonclick", (e) => {
-      //   console.log("PM BUTTON CLICK ", e);
-      // });
-      // this.map.pm.Toolbar.createCustomControl({
-      //   name: "boxAlert",
-      //   title: "Count layers",
-      //   onClick: () => {
-      //     alert(
-      //       "There are " + L.PM.Utils.findLayers(this.map).length + " layers on the map"
-      //     );
-      //   },
-      //   toggle: false,
-      // });
     },
   },
 };
