@@ -2,22 +2,28 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title> Privacy Policy</v-card-title>
+        <v-card-title>
+          <span class="text-h5">Editar ou Remover Desenho</span>
+        </v-card-title>
         <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-          nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-          fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-btn>Editar</v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-btn>Remover</v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn @click="dialog = false">
-            Accept
-          </v-btn>
+          <v-btn @click="dialog = false"> Accept </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
