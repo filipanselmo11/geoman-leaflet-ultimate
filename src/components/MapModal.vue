@@ -6,18 +6,15 @@
           <span class="text-h5">Editar ou Remover Desenho</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-btn>Editar</v-btn>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
-                <v-btn>Remover</v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
+          <div>
+            <v-btn class="grey lighten-4 mx-2">
+              Editar
+            </v-btn>
+
+            <v-btn class="grey lighten-4 mx-2">
+              Remover
+            </v-btn>
+          </div>
         </v-card-text>
 
         <v-divider></v-divider>
