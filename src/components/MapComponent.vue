@@ -1,25 +1,29 @@
 <template>
-  <v-container>
+  <div id="map-wrapper">
+    <div ref="mapElementMonitoringRef" class="map" />
+    <map-modal
+      :map-dialog="mapDialog"
+      @mapDialogClose="eventHandlerMapDialogClose"
+    ></map-modal>
+  </div>
+  <!-- <v-container>
     <v-card>
-      <div id="sidebar" class="leaflet-sidebar">
-        <sidebar-menu-component
-          @menu-button-clicked="menuButtonClicked"
-        ></sidebar-menu-component>
-      </div>
       <div id="map"></div>
-      <map-modal :map-dialog="mapDialog"></map-modal>
+      <map-modal
+        :map-dialog="mapDialog"
+        @mapDialogClose="eventHandlerMapDialogClose"
+      ></map-modal>
     </v-card>
-  </v-container>
+  </v-container> -->
 </template>
 
 <script>
 import "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet-sidebar-v2";
-import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
+// import "leaflet-sidebar-v2";
+// import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import SidebarMenuComponent from "./SidebarMenuComponent.vue";
 import MapModal from "./MapModal.vue";
 
 const L = window["L"];
@@ -47,20 +51,13 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
-  components: { SidebarMenuComponent, MapModal },
+  components: { MapModal },
   name: "MapComponent",
   // props:{},
   data: () => ({
     map: null,
     tileLayer: null,
     mapDialog: false,
-    rightSidebar: L.control.sidebar({
-      autopan: false,
-      closeButton: true,
-      container: "sidebar",
-      position: "right",
-    }),
-
     layerControl: null,
     // editableLayers: null,
   }),
@@ -69,8 +66,10 @@ export default {
   },
   methods: {
     initMap() {
-      this.map = L.map("map", { pmIgnore: false }).setView([-25.441105, -49.276855], 13);
-      this.rightSidebar.addTo(this.map);
+      this.map = L.map(this.$refs.mapElementMonitoringRef, { pmIgnore: false }).setView(
+        [-25.441105, -49.276855],
+        13
+      );
       // console.log("Right Side bar ", this.rightSidebar);
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
@@ -84,85 +83,6 @@ export default {
       this.tileLayer.addTo(this.map);
 
       this.setDrawingTools();
-
-      // this.creatFunction();
-
-      // this.map.pm.setGlobalOptions({
-      //   allowSelfIntersection: false,
-      //   finishOn: "dblclick",
-      // });
-      //   this.map.pm.removeControls();
-      // this.map.pm.toggleControls();
-      // this.map.pm.controlsVisible();
-      // this.layerControl = L.control.layers()
-      // this.map.on("pm:drawstart", (e) => {
-      //   this.logEvent(e);
-      //   var layer = e.workingLayer;
-      //   layer.on("pm:vertexadded", this.logEvent);
-      //   layer.on("pm:snapdrag", this.logEvent);
-      //   layer.on("pm:snap", this.logEvent);
-      //   layer.on("pm:unsnap", this.logEvent);
-      //   layer.on("pm:centerplaced", this.logEvent);
-      // });
-      // this.map.on("pm:drawend", this.logEvent);
-      // this.map.on("pm:create", (e) => {
-      //   this.logEvent(e);
-      //   var layer = e.layer;
-      //   this.map.pm.disableDraw();
-      //   layer.pm.enable({
-      //     allowSelfIntersection: false,
-      //   });
-
-      //   //Edit Event
-      //   layer.on("pm:edit", this.logEvent);
-      //   layer.on("pm:update", this.logEvent);
-      //   layer.on("pm:enable", this.logEvent);
-      //   layer.on("pm:disable", this.logEvent);
-      //   layer.on("pm:vertexadded", this.logEvent);
-      //   layer.on("pm:vertexremoved", this.logEvent);
-      //   layer.on("pm:markerdragstart", this.logEvent);
-      //   layer.on("pm:markerdrag", this.logEvent);
-      //   layer.on("pm:markerdragend", this.logEvent);
-      //   layer.on("pm:snap", this.logEvent);
-      //   layer.on("pm:snapdrag", this.logEvent);
-      //   layer.on("pm:unsnap", this.logEvent);
-      //   layer.on("pm:intersect", this.logEvent);
-      //   layer.on("pm:centerplaced", this.logEvent);
-
-      //   //Drag Event
-      //   layer.on("pm:dragstart", this.logEvent);
-      //   layer.on("pm:drag", this.logEvent);
-      //   layer.on("pm:dragend", this.logEvent);
-
-      //   //Cut Event
-      //   layer.on("pm:cut", this.logEvent);
-
-      //   //Remove Event
-      //   layer.on("pm:remove", this.logEvent);
-      // });
-
-      //Toggle mode events
-      // this.map.on("pm:globaleditmodetoggled", this.logEvent);
-      // this.map.on("pm:globaldragmodetoggled", this.logEvent);
-      // this.map.on("pm:globalremovalmodetoggled", this.logEvent);
-      // this.map.on("pm:globaldrawmodetoggled", this.logEvent);
-      // this.map.on("pm:globalcutmodetoggled", this.logEvent);
-
-      //Remove Event
-      // this.map.on("pm:remove", this.logEvent);
-      // this.map.on("layerremove", this.logEvent);
-
-      //Cut event
-      // this.map.on("pm:cut", this.logEvent);
-
-      // this.map.on("pm:create", (e) => {
-      //   var layer = e.layer;
-      //   this.setPopup(layer);
-      //   layer.on("pm:update", (e) => {
-      //     this.setPopup(e.layer);
-      //   });
-      // });
-      // this.customToolbarControl();
     },
 
     setDrawingTools() {
@@ -174,27 +94,43 @@ export default {
         customControls: true,
         oneBlock: false,
         removalMode: true,
+        dragMode: false,
+        cutPolygon: false,
+        rotateMode: false,
+        drawText: false,
+        drawCircleMarker: false,
+        drawMarker: false,
+        drawPolyline: false,
       });
 
-      this.map.on("pm:drawstart", (e) => {
-        console.log("LAYER ", e.shape);
+      this.map.pm.setGlobalOptions({
+        allowSelfIntersection: false,
+        finishOn: "dblclick",
       });
+
+      // this.map.on("pm:drawstart", (e) => {
+      //   console.log("LAYER ", e.shape);
+      // });
 
       this.map.on("pm:create", (e) => {
         var shape = e.shape;
         if (shape === "Circle") {
-          e.layer.on("click", () => {
-            this.mapDialogOnClick(e, shape);
+          e.layer.on("click", (x) => {
+            this.mapDialogOnClick(x, shape);
+            // console.log('Olá eu sou um círculo ', x);
           });
         }
         if (shape === "Polygon") {
-          e.layer.on("click", () => {
-            this.mapDialogOnClick(e, shape);
+          e.layer.on("click", (x) => {
+            this.mapDialogOnClick(x, shape);
+            // console.log('Olá eu sou um polígono ', x);
           });
         }
         if (shape === "Rectangle") {
-          e.layer.on("click", () => {
-            this.mapDialogOnClick(e, shape);
+          e.layer.on("click", (x) => {
+            this.mapDialogOnClick(x, shape);
+            // this.mapDialogOnClick(x, L.Rectangle);
+            // console.log('Olá eu sou um retangulo ', x);
           });
         }
       });
@@ -204,12 +140,16 @@ export default {
       console.log("mapDialogOnClick ", e, type);
       if (type instanceof L.Circle) {
         this.map.setView(e.target.getLatLng());
+        console.log("LAT LON ", e.target.getLatLng());
       } else if (type instanceof L.Polygon || type instanceof L.Rectangle) {
         this.map.setView(e.target.getBounds().getCenter());
+        console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
       }
       this.mapDialog = true;
     },
-    //Copy geoman Graw Control
+    eventHandlerMapDialogClose(reply) {
+      this.mapDialog = !reply.dialogClosed;
+    },
 
     logEvent(e) {
       console.log("Log Event ", e);
@@ -234,10 +174,16 @@ export default {
 </script>
 
 <style scoped>
-#map {
-  height: 600px;
+.map {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
 }
-.leaflet-sidebar {
+
+#map-wrapper {
+  height: calc(100vh - 90px);
+}
+/*.leaflet-sidebar {
   position: absolute;
   top: 20px;
   right: 15px;
@@ -248,5 +194,5 @@ export default {
   background-color: transparent;
   overflow-y: auto;
   border: 1px solid red;
-}
+}*/
 </style>
