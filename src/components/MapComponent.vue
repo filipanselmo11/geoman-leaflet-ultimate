@@ -6,15 +6,6 @@
       @mapDialogClose="eventHandlerMapDialogClose"
     ></map-modal>
   </div>
-  <!-- <v-container>
-    <v-card>
-      <div id="map"></div>
-      <map-modal
-        :map-dialog="mapDialog"
-        @mapDialogClose="eventHandlerMapDialogClose"
-      ></map-modal>
-    </v-card>
-  </v-container> -->
 </template>
 
 <script>
@@ -51,10 +42,28 @@ export default {
     this.map.on("pm:create", (e) => {
       var shape = e.shape;
       if (shape === "Circle") {
+        let coordinates = [];
+        coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
+        coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
+        let feature = {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: coordinates },
+          properties: {
+            subType: "Circle",
+            radius: e.layer.getRadius().toFixed(4),
+          },
+        };
+        this.replyFeature(feature);
         e.layer.on("click", (x) => {
           this.mapDialogOnClick(x, shape);
         });
       } else if (shape === "Polygon") {
+        let coordinates = [];
+        const latlngs = e.layer.getLatLngs()[0];
+        for (let r = 0; r < latlngs.length; r++) {
+          coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
+        }
+        this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
           this.mapDialogOnClick(x, shape);
         });
@@ -158,16 +167,4 @@ export default {
 #map-wrapper {
   height: calc(100vh - 90px);
 }
-/*.leaflet-sidebar {
-  position: absolute;
-  top: 20px;
-  right: 15px;
-  max-width: 250px;
-  height: 75vh;
-  overflow: hidden;
-  z-index: 1999;
-  background-color: transparent;
-  overflow-y: auto;
-  border: 1px solid red;
-}*/
 </style>
