@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+  <v-row justify="center">
+    <v-dialog persistent v-model="dialog" width="500">
       <v-card>
         <v-card-title>
           <span class="text-h5">Editar ou Remover Desenho</span>
@@ -20,7 +20,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-row>
 </template>
 
 <script>
