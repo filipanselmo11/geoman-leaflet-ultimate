@@ -39,8 +39,11 @@ export default {
   },
   watch: {
     mapDialog(val) {
-      let watchValue = (this.dialog = val);
-      console.log("Watch Value ", watchValue);
+      setTimeout(() => {
+        this.dialog = val;
+        // let watchValue = (this.dialog = val);
+        // console.log("Watch Value ", watchValue);
+      }, 100);
     },
   },
   methods: {

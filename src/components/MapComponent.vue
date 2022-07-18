@@ -39,9 +39,10 @@ export default {
   }),
   mounted() {
     this.initMap();
+    //Draw Create
     this.map.on("pm:create", (e) => {
       var shape = e.shape;
-      if (shape === "Circle") {
+      if (shape instanceof L.Circle) {
         let coordinates = [];
         coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
         coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
@@ -55,9 +56,9 @@ export default {
         };
         this.replyFeature(feature);
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+          this.mapDialogOnClick(x, L.Circle);
         });
-      } else if (shape === "Polygon") {
+      } else if (shape instanceof L.Polygon) {
         let coordinates = [];
         const latlngs = e.layer.getLatLngs()[0];
         for (let r = 0; r < latlngs.length; r++) {
@@ -65,11 +66,17 @@ export default {
         }
         this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+          this.mapDialogOnClick(x, L.Polygon);
         });
-      } else if (shape === "Rectangle") {
+      } else if (shape instanceof L.Rectangle) {
+        let coordinates = [];
+        const latlngs = e.layer.getLatLngs()[0];
+        for(var r = 0; r < latlngs.length; r++){
+          coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
+        }
+        this.replyGeometry({type: 'Rectangle', coordinates: [coordinates]});
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+          this.mapDialogOnClick(x, L.Rectangle);
         });
       }
     });
