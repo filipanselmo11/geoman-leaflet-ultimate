@@ -1,10 +1,11 @@
 <template>
   <div id="map-wrapper">
     <div ref="mapElementMonitoringRef" class="map" />
-    <map-modal
+    <other-modal-component></other-modal-component>
+    <!-- <map-modal
       :map-dialog="mapDialog"
       @mapDialogClose="eventHandlerMapDialogClose"
-    ></map-modal>
+    ></map-modal> -->
   </div>
 </template>
 
@@ -15,7 +16,9 @@ import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import MapModal from "./MapModal.vue";
+import OtherModalComponent from "./OtherModalComponent.vue";
+
+// import MapModal from "./MapModal.vue";
 
 const L = window["L"];
 
@@ -27,7 +30,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
-  components: { MapModal },
+  components: { OtherModalComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -42,7 +45,7 @@ export default {
     //Draw Create
     this.map.on("pm:create", (e) => {
       var shape = e.shape;
-      if (shape instanceof L.Circle) {
+      if (shape === "Circle") {
         let coordinates = [];
         coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
         coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
@@ -56,9 +59,9 @@ export default {
         };
         this.replyFeature(feature);
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, L.Circle);
+          this.mapDialogOnClick(x, shape);
         });
-      } else if (shape instanceof L.Polygon) {
+      } else if (shape === "Polygon") {
         let coordinates = [];
         const latlngs = e.layer.getLatLngs()[0];
         for (let r = 0; r < latlngs.length; r++) {
@@ -66,17 +69,17 @@ export default {
         }
         this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, L.Polygon);
+          this.mapDialogOnClick(x, shape);
         });
-      } else if (shape instanceof L.Rectangle) {
+      } else if (shape === "Rectangle") {
         let coordinates = [];
         const latlngs = e.layer.getLatLngs()[0];
-        for(var r = 0; r < latlngs.length; r++){
+        for (var r = 0; r < latlngs.length; r++) {
           coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
         }
-        this.replyGeometry({type: 'Rectangle', coordinates: [coordinates]});
+        this.replyGeometry({ type: "Rectangle", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, L.Rectangle);
+          this.mapDialogOnClick(x, shape);
         });
       }
     });
@@ -127,11 +130,12 @@ export default {
     },
 
     mapDialogOnClick(e, type) {
+      var shape = e.shape;
       console.log("mapDialogOnClick ", e, type);
-      if (type instanceof L.Circle) {
+      if (shape === "Circle") {
         this.map.setView(e.target.getLatLng());
         console.log("LAT LON ", e.target.getLatLng());
-      } else if (type instanceof L.Polygon || type instanceof L.Rectangle) {
+      } else if (shape === "Polygon" || shape === "Rectangle") {
         this.map.setView(e.target.getBounds().getCenter());
         console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
       }
