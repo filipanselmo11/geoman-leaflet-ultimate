@@ -28,21 +28,6 @@ import MapModal from "./MapModal.vue";
 
 const L = window["L"];
 
-//Copy Geoman Draw Control
-
-// const L = window.L;
-
-// var L = window.L;
-
-// var L = window["L"];
-
-// const rightSidebar = L.control.sidebar({
-//   autopan: false,
-//   closeButton: true,
-//   container: "sidebar",
-//   position: "right",
-// });
-
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -63,6 +48,22 @@ export default {
   }),
   mounted() {
     this.initMap();
+    this.map.on("pm:create", (e) => {
+      var shape = e.shape;
+      if (shape === "Circle") {
+        e.layer.on("click", (x) => {
+          this.mapDialogOnClick(x, shape);
+        });
+      } else if (shape === "Polygon") {
+        e.layer.on("click", (x) => {
+          this.mapDialogOnClick(x, shape);
+        });
+      } else if (shape === "Rectangle") {
+        e.layer.on("click", (x) => {
+          this.mapDialogOnClick(x, shape);
+        });
+      }
+    });
   },
   methods: {
     initMap() {
@@ -107,33 +108,6 @@ export default {
         allowSelfIntersection: false,
         finishOn: "dblclick",
       });
-
-      // this.map.on("pm:drawstart", (e) => {
-      //   console.log("LAYER ", e.shape);
-      // });
-
-      this.map.on("pm:create", (e) => {
-        var shape = e.shape;
-        if (shape === "Circle") {
-          e.layer.on("click", (x) => {
-            this.mapDialogOnClick(x, shape);
-            // console.log('Olá eu sou um círculo ', x);
-          });
-        }
-        if (shape === "Polygon") {
-          e.layer.on("click", (x) => {
-            this.mapDialogOnClick(x, shape);
-            // console.log('Olá eu sou um polígono ', x);
-          });
-        }
-        if (shape === "Rectangle") {
-          e.layer.on("click", (x) => {
-            this.mapDialogOnClick(x, shape);
-            // this.mapDialogOnClick(x, L.Rectangle);
-            // console.log('Olá eu sou um retangulo ', x);
-          });
-        }
-      });
     },
 
     mapDialogOnClick(e, type) {
@@ -151,6 +125,14 @@ export default {
       this.mapDialog = !reply.dialogClosed;
     },
 
+    replyGeometry(geometry) {
+      this.$emit("listenerMap", geometry);
+    },
+
+    replyFeature(feature) {
+      this.$emit("listernerFeatureMap", feature);
+    },
+
     logEvent(e) {
       console.log("Log Event ", e);
     },
@@ -161,13 +143,6 @@ export default {
       var feature = layer.toGeoJSON();
       var coords = this.makePopupContent(feature);
       layer.bindPopup(coords);
-    },
-
-    menuButtonClicked() {
-      this.map.on("pm:buttonclick", (e) => {
-        var layer = e.layer;
-        console.log("LAYER ", layer);
-      });
     },
   },
 };
