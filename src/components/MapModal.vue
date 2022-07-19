@@ -8,9 +8,9 @@
         </v-card-title>
         <v-card-text>
           <div>
-            <v-btn class="grey lighten-4 mx-2"> Editar </v-btn>
+            <v-btn @click="editOnClick" class="grey lighten-4 mx-2"> Editar </v-btn>
 
-            <v-btn class="grey lighten-4 mx-2"> Remover </v-btn>
+            <v-btn @click="removeOnClick" class="grey lighten-4 mx-2"> Remover </v-btn>
           </div>
         </v-card-text>
 
@@ -56,11 +56,13 @@ export default {
         dialogClosed: true,
       });
     },
-    editOnClick() {
-      this.$emit("editDrawing", );
+    editOnClick(e) {
+      this.$emit("editDrawing", e);
+      console.log('Edit Button Clicked');
     },
-    removeOnClick() {
-      this.$emit("removeDrawing", );
+    removeOnClick(e) {
+      this.$emit("removeDrawing", e);
+      console.log('Remove Button Clicked');
     },
   },
 };
