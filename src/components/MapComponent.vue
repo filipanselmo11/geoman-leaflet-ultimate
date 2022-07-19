@@ -134,12 +134,20 @@ export default {
       console.log("mapDialogOnClick ", e, type);
       if (shape === "Circle") {
         this.map.setView(e.target.getLatLng());
-        console.log("LAT LON ", e.target.getLatLng());
-      } else if (shape === "Polygon" || shape === "Rectangle") {
+      } else if (shape === "Polygon") {
         this.map.setView(e.target.getBounds().getCenter());
-        console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
+      } else if (shape === "Rectangle") {
+        this.map.setView(e.target.getBounds().getCenter());
       }
       this.mapDialog = true;
+      // if (shape === "Circle") {
+      //   this.map.setView(e.target.getLatLng());
+      //   console.log("LAT LON ", e.target.getLatLng());
+      // } else if (shape === "Polygon" || shape === "Rectangle") {
+      //   this.map.setView(e.target.getBounds().getCenter());
+      //   console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
+      // }
+      // this.mapDialog = true;
     },
     eventHandlerMapDialogClose(reply) {
       this.mapDialog = !reply.dialogClosed;
