@@ -1,11 +1,11 @@
 <template>
   <div id="map-wrapper">
-    <div ref="mapElementMonitoringRef" class="map" />
-    <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
     <map-modal
       :map-dialog="mapDialog"
       @mapDialogClose="eventHandlerMapDialogClose"
     ></map-modal>
+    <div ref="mapElementMonitoringRef" class="map" />
+    <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
   </div>
 </template>
 
@@ -41,45 +41,23 @@ export default {
     // editableLayers: null,
   }),
   mounted() {
+    var _this = this;
     this.initMap();
     //Draw Create
-    this.map.on("pm:create", (e) => {
-      var shape = e.shape;
-      if (shape === "Circle") {
-        // let coordinates = [];
-        // coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
-        // coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
-        // let feature = {
-        //   type: "Feature",
-        //   geometry: { type: "Point", coordinates: coordinates },
-        //   properties: {
-        //     subType: "Circle",
-        //     radius: e.layer.getRadius().toFixed(4),
-        //   },
-        // };
-        // this.replyFeature(feature);
-        e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+    this.map.on("pm:create", function (e) {
+      var layer = e.layer;
+      console.log("LAYER ", layer);
+      if (layer instanceof L.Circle) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Circle);
         });
-      } else if (shape === "Polygon") {
-        // let coordinates = [];
-        // const latlngs = e.layer.getLatLngs()[0];
-        // for (let r = 0; r < latlngs.length; r++) {
-        //   coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
-        // }
-        // this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
-        e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+      } else if (layer instanceof L.Polygon) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Polygon);
         });
-      } else if (shape === "Rectangle") {
-        // let coordinates = [];
-        // const latlngs = e.layer.getLatLngs()[0];
-        // for (var r = 0; r < latlngs.length; r++) {
-        //   coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
-        // }
-        // this.replyGeometry({ type: "Rectangle", coordinates: [coordinates] });
-        e.layer.on("click", (x) => {
-          this.mapDialogOnClick(x, shape);
+      } else if (layer instanceof L.Rectangle) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Rectangle);
         });
       }
     });

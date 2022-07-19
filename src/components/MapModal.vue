@@ -42,7 +42,9 @@ export default {
   watch: {
     mapDialog(val) {
       if (val) {
-        this.dialog = val;
+        setTimeout(() => {
+          this.dialog = val;
+        }, 100);
       }
     },
   },
@@ -55,10 +57,10 @@ export default {
       });
     },
     editOnClick() {
-      this.$emit("");
+      this.$emit("editDrawing", );
     },
     removeOnClick() {
-      this.$emit("");
+      this.$emit("removeDrawing", );
     },
   },
 };
