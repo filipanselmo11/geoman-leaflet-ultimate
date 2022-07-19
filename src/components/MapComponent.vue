@@ -1,11 +1,11 @@
 <template>
   <div id="map-wrapper">
     <div ref="mapElementMonitoringRef" class="map" />
-    <other-modal-component></other-modal-component>
-    <!-- <map-modal
+    <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
+    <map-modal
       :map-dialog="mapDialog"
       @mapDialogClose="eventHandlerMapDialogClose"
-    ></map-modal> -->
+    ></map-modal>
   </div>
 </template>
 
@@ -16,9 +16,9 @@ import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import OtherModalComponent from "./OtherModalComponent.vue";
+// import OtherModalComponent from "./OtherModalComponent.vue";
 
-// import MapModal from "./MapModal.vue";
+import MapModal from "./MapModal.vue";
 
 const L = window["L"];
 
@@ -30,7 +30,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
-  components: { OtherModalComponent },
+  components: { MapModal },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -46,38 +46,38 @@ export default {
     this.map.on("pm:create", (e) => {
       var shape = e.shape;
       if (shape === "Circle") {
-        let coordinates = [];
-        coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
-        coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
-        let feature = {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: coordinates },
-          properties: {
-            subType: "Circle",
-            radius: e.layer.getRadius().toFixed(4),
-          },
-        };
-        this.replyFeature(feature);
+        // let coordinates = [];
+        // coordinates[0] = e.layer.getLatLng().lat.toFixed(4);
+        // coordinates[1] = e.layer.getLatLng().lng.toFixed(4);
+        // let feature = {
+        //   type: "Feature",
+        //   geometry: { type: "Point", coordinates: coordinates },
+        //   properties: {
+        //     subType: "Circle",
+        //     radius: e.layer.getRadius().toFixed(4),
+        //   },
+        // };
+        // this.replyFeature(feature);
         e.layer.on("click", (x) => {
           this.mapDialogOnClick(x, shape);
         });
       } else if (shape === "Polygon") {
-        let coordinates = [];
-        const latlngs = e.layer.getLatLngs()[0];
-        for (let r = 0; r < latlngs.length; r++) {
-          coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
-        }
-        this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
+        // let coordinates = [];
+        // const latlngs = e.layer.getLatLngs()[0];
+        // for (let r = 0; r < latlngs.length; r++) {
+        //   coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
+        // }
+        // this.replyGeometry({ type: "Polygon", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
           this.mapDialogOnClick(x, shape);
         });
       } else if (shape === "Rectangle") {
-        let coordinates = [];
-        const latlngs = e.layer.getLatLngs()[0];
-        for (var r = 0; r < latlngs.length; r++) {
-          coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
-        }
-        this.replyGeometry({ type: "Rectangle", coordinates: [coordinates] });
+        // let coordinates = [];
+        // const latlngs = e.layer.getLatLngs()[0];
+        // for (var r = 0; r < latlngs.length; r++) {
+        //   coordinates.push([latlngs[r].lat.toFixed(4), latlngs[r].lng.toFixed(4)]);
+        // }
+        // this.replyGeometry({ type: "Rectangle", coordinates: [coordinates] });
         e.layer.on("click", (x) => {
           this.mapDialogOnClick(x, shape);
         });

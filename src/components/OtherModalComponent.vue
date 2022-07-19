@@ -1,6 +1,6 @@
 <template>
   <div class="center">
-    <input v-model="dialog" type="checkbox" id="click" />
+    <input type="checkbox" @click="openModal" />
     <!-- <label for="click" class="click-me"> Click Me</label> -->
     <div class="content">
       <div class="header">
@@ -20,23 +20,26 @@
 <script>
 export default {
   name: "OtherModalComponent",
-  props: {
-    mapDialog: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  // props: {
+  //   mapDialog: {
+  //     type: Boolean,
+  //     default: false,
+  //   },
+  // },
   data() {
     return {
-      dialog: false,
+      // dialog: false,
     };
   },
-  watch: {
-    mapDialog(val) {
-      this.dialog = val;
-    },
-  },
+  // watch: {
+  //   mapDialog(val) {
+  //     this.dialog = val;
+  //   },
+  // },
   methods: {
+    openModal(e) {
+      this.$emit('open-modal', e)
+    },
     onClose() {
       console.log("Dialog Fechado");
       this.dialog = false;

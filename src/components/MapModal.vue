@@ -1,7 +1,7 @@
 <template>
-  <!-- <v-row justify="center"> -->
-  <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+  <v-row justify="center">
+    <!-- <div class="text-center"> -->
+    <v-dialog v-model="dialog" persistent width="500">
       <v-card>
         <v-card-title>
           <span class="text-h5">Editar ou Remover Desenho</span>
@@ -17,12 +17,12 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn @click="onClose"> Accept </v-btn>
+          <v-btn @click="onClose"> Fechar </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
-  <!-- </v-row> -->
+    <!-- </div> -->
+  </v-row>
 </template>
 
 <script>
@@ -41,11 +41,9 @@ export default {
   },
   watch: {
     mapDialog(val) {
-      setTimeout(() => {
+      if (val) {
         this.dialog = val;
-        // let watchValue = (this.dialog = val);
-        // console.log("Watch Value ", watchValue);
-      }, 100);
+      }
     },
   },
   methods: {
