@@ -22,11 +22,32 @@
         <v-divider></v-divider>
 
         <v-list>
+            <v-list-item @click="editarOnClick">
+                <v-list-item-title>Editar Desenho</v-list-item-title>
+            </v-list-item>
+        </v-list>
+          <v-list>
+            <v-list-item @click="editarOnClick">
+                <v-list-item-title>Atribuir Evento</v-list-item-title>
+            </v-list-item>
+        </v-list>
+          <v-list>
+            <v-list-item @click="editarOnClick">
+                <v-list-item-title>Atribuir Categoria</v-list-item-title>
+            </v-list-item>
+        </v-list>
+          <v-list>
+            <v-list-item @click="editarOnClick">
+                <v-list-item-title>Remover Desenho</v-list-item-title>
+            </v-list-item>
+        </v-list>
+        
+        <!-- <v-list>
           <v-list-item v-for="(item, index) in items" :key="index" @click="() => {
           }">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
-        </v-list>
+        </v-list> -->
         <v-card-actions>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -73,6 +94,21 @@ export default {
       },
     ],
   }),
+
+  methods:{
+    editarOnClick(){
+        console.log('Editar Desenho Clicked');
+    },
+    atribuirOnClick(){
+        console.log('Atribuir Evento Clicked');
+    },
+    atribuirCategoriaOnClick() {
+        console.log('Atribuir Categoria Clicked');
+    },
+    removerDesenhoOnClick(){
+        console.log('Remover Desenho Clicked');
+    }
+  }
 };
 </script>
 
