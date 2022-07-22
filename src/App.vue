@@ -6,6 +6,8 @@
       </v-toolbar>
     </v-app-bar>
 
+    <br/>
+
     <v-main>
       <!-- <other-modal-component></other-modal-component> -->
       <map-component></map-component>

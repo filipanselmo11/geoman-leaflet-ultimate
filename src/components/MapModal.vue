@@ -10,6 +10,7 @@
             <v-btn dar text @click="onClose">Fechar</v-btn>
           </v-toolbar-items>
         </v-toolbar>
+        <br/>
         <v-card-text>
           <div>
             <v-btn @click="editOnClick" class="grey lighten-4 mx-2"> Editar </v-btn>
@@ -57,10 +58,12 @@ export default {
     editOnClick(e) {
       this.$emit("editOnClick", e);
       console.log('Edit Button Clicked');
+      this.dialog = false;
     },
     removeOnClick(e) {
       this.$emit("removeOnClick", e);
       console.log('Remove Button Clicked');
+      this.dialog = false;
     },
   },
 };

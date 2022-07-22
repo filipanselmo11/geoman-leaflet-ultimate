@@ -1,10 +1,12 @@
 <template>
   <div id="map-wrapper">
+    <div ref="mapElementMonitoringRef" class="map" />
     <map-modal
       :map-dialog="mapDialog"
+      @editOnClick="editOnClick"
+      @removeOnClick="removeOnClick"
       @mapDialogClose="eventHandlerMapDialogClose"
     ></map-modal>
-    <div ref="mapElementMonitoringRef" class="map" />
     <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
   </div>
 </template>
@@ -126,6 +128,19 @@ export default {
       //   console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
       // }
       // this.mapDialog = true;
+    },
+
+    editOnClick() {
+      const editElement = document.getElementsByClassName('leaflet-pm-icon-edit');
+      editElement[0].click(() => {
+        this.map.on('pm:editend', (e) => {
+          console.log('Edit End ', e);
+        })
+      });
+    },
+    removeOnClick() {
+      const removeElement = document.getElementsByClassName('leaflet-pm-icon-delete');
+      removeElement[0].click(() => {});
     },
     eventHandlerMapDialogClose(reply) {
       this.mapDialog = !reply.dialogClosed;
