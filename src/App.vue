@@ -10,7 +10,7 @@
 
     <v-main>
       <!-- <other-modal-component></other-modal-component> -->
-      <map-component></map-component>
+      <!-- <map-component></map-component> -->
       <modal-map-component></modal-map-component>
     </v-main>
   </v-app>
@@ -18,13 +18,13 @@
 
 <script>
 // import OtherModalComponent from './components/OtherModalComponent.vue';
-import MapComponent from "./components/MapComponent.vue";
+// import MapComponent from "./components/MapComponent.vue";
 import ModalMapComponent from "./components/ModalMapComponent.vue";
 export default {
   name: "App",
 
   components: {
-    MapComponent,
+    // MapComponent,
     ModalMapComponent
   },
 
