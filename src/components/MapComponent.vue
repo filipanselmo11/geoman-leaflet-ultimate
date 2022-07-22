@@ -1,16 +1,26 @@
 <template>
-  <v-container>
-    <v-card>
-      <div id="map"></div>
-    </v-card>
-  </v-container>
+  <div id="map-wrapper">
+    <div ref="mapElementMonitoringRef" class="map" />
+    <map-modal
+      :map-dialog="mapDialog"
+      @editOnClick="editOnClick"
+      @removeOnClick="removeOnClick"
+      @mapDialogClose="eventHandlerMapDialogClose"
+    ></map-modal>
+    <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
+  </div>
 </template>
 
 <script>
-import "leaflet/dist/leaflet.css";
 import "leaflet";
+import "leaflet/dist/leaflet.css";
+// import "leaflet-sidebar-v2";
+// import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+// import OtherModalComponent from "./OtherModalComponent.vue";
+
+import MapModal from "./MapModal.vue";
 
 const L = window["L"];
 
@@ -22,36 +32,151 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
+  components: { MapModal },
   name: "MapComponent",
+  // props:{},
   data: () => ({
     map: null,
+    tileLayer: null,
+    mapDialog: false,
+    layerControl: null,
+    // editableLayers: null,
   }),
   mounted() {
+    var _this = this;
     this.initMap();
+    //Draw Create
+    this.map.on("pm:create", function (e) {
+      var layer = e.layer;
+      console.log("LAYER ", layer);
+      if (layer instanceof L.Circle) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Circle);
+        });
+      } else if (layer instanceof L.Polygon) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Polygon);
+        });
+      } else if (layer instanceof L.Rectangle) {
+        layer.on("click", function (e) {
+          _this.mapDialogOnClick(e, L.Rectangle);
+        });
+      }
+    });
   },
   methods: {
     initMap() {
-      this.map = L.map("map", { pmIgnore: false }).setView([40.0269319, 32.83604819], 13);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
-      L.marker([51.50915, -0.096112], { pmIgnore: true }).addTo(this.map);
-      L.PM.setOptIn(true);
-      L.PM.setOptIn(false);
-      this.map.on("pm:create", (e) => {
-        e.layer.setStyle({ pmIgnore: false });
-        L.PM.reInitLayer(e.layer);
+      this.map = L.map(this.$refs.mapElementMonitoringRef, { pmIgnore: false }).setView(
+        [-25.441105, -49.276855],
+        13
+      );
+      // console.log("Right Side bar ", this.rightSidebar);
+      this.tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
+        {
+          maxZoom: 20,
+          attribution:
+            '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      );
+
+      this.tileLayer.addTo(this.map);
+
+      this.setDrawingTools();
+    },
+
+    setDrawingTools() {
+      this.map.pm.addControls({
+        position: "topleft",
+        drawControls: true,
+        editControls: true,
+        optionsControls: true,
+        customControls: true,
+        oneBlock: false,
+        removalMode: true,
+        dragMode: false,
+        cutPolygon: false,
+        rotateMode: false,
+        drawText: false,
+        drawCircleMarker: false,
+        drawMarker: false,
+        drawPolyline: false,
       });
-      //   L.marker([[51.50915, -0.096112]], { pmIgnore: true }).addTo(this.map);
+
+      this.map.pm.setGlobalOptions({
+        allowSelfIntersection: false,
+        finishOn: "dblclick",
+      });
+    },
+
+    mapDialogOnClick(e, type) {
+      var shape = e.shape;
+      console.log("mapDialogOnClick ", e, type);
+      if (shape === "Circle") {
+        this.map.setView(e.target.getLatLng());
+      } else if (shape === "Polygon") {
+        this.map.setView(e.target.getBounds().getCenter());
+      } else if (shape === "Rectangle") {
+        this.map.setView(e.target.getBounds().getCenter());
+      }
+      this.mapDialog = true;
+      // if (shape === "Circle") {
+      //   this.map.setView(e.target.getLatLng());
+      //   console.log("LAT LON ", e.target.getLatLng());
+      // } else if (shape === "Polygon" || shape === "Rectangle") {
+      //   this.map.setView(e.target.getBounds().getCenter());
+      //   console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
+      // }
+      // this.mapDialog = true;
+    },
+
+    editOnClick() {
+      const editElement = document.getElementsByClassName('leaflet-pm-icon-edit');
+      editElement[0].click(() => {
+        this.map.on('pm:editend', (e) => {
+          console.log('Edit End ', e);
+        })
+      });
+    },
+    removeOnClick() {
+      const removeElement = document.getElementsByClassName('leaflet-pm-icon-delete');
+      removeElement[0].click(() => {});
+    },
+    eventHandlerMapDialogClose(reply) {
+      this.mapDialog = !reply.dialogClosed;
+    },
+
+    replyGeometry(geometry) {
+      this.$emit("listenerMap", geometry);
+    },
+
+    replyFeature(feature) {
+      this.$emit("listernerFeatureMap", feature);
+    },
+
+    logEvent(e) {
+      console.log("Log Event ", e);
+    },
+    makePopupContent(feature) {
+      return `${feature.geometry.coordinates}`;
+    },
+    setPopup(layer) {
+      var feature = layer.toGeoJSON();
+      var coords = this.makePopupContent(feature);
+      layer.bindPopup(coords);
     },
   },
 };
 </script>
 
 <style scoped>
-#map {
-  height: 600px;
+.map {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+#map-wrapper {
+  height: calc(100vh - 90px);
 }
 </style>
