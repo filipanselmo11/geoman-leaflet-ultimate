@@ -132,13 +132,15 @@ export default {
       var shape = e.shape;
       console.log("mapDialogOnClick ", e, type);
       if (shape === "Circle") {
-        this.map.setView(e.target.getLatLng());
+        this.mapDialog = true;
+        // this.map.setView(e.target.getLatLng());
       } else if (shape === "Polygon") {
-        this.map.setView(e.target.getBounds().getCenter());
+        this.mapDialog = true;
+        // this.map.setView(e.target.getBounds().getCenter());
       } else if (shape === "Rectangle") {
-        this.map.setView(e.target.getBounds().getCenter());
+        this.mapDialog = true;
+        // this.map.setView(e.target.getBounds().getCenter());
       }
-      this.mapDialog = true;
       // if (shape === "Circle") {
       //   this.map.setView(e.target.getLatLng());
       //   console.log("LAT LON ", e.target.getLatLng());
