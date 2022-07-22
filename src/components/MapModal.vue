@@ -1,11 +1,15 @@
 <template>
   <v-row justify="center">
     <!-- <div class="text-center"> -->
-    <v-dialog v-model="dialog" persistent width="500">
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">Editar ou Remover Desenho</span>
-        </v-card-title>
+    <v-dialog v-model="dialog" width="500">
+      <v-card tile>
+        <v-toolbar flat dark color="primary">
+          <v-toolbar-title>Editar ou Remover Desenho</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dar text @click="onClose">Fechar</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
         <v-card-text>
           <div>
             <v-btn @click="editOnClick" class="grey lighten-4 mx-2"> Editar </v-btn>
@@ -13,12 +17,6 @@
             <v-btn @click="removeOnClick" class="grey lighten-4 mx-2"> Remover </v-btn>
           </div>
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-btn @click="onClose"> Fechar </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- </div> -->
@@ -57,11 +55,11 @@ export default {
       });
     },
     editOnClick(e) {
-      this.$emit("editDrawing", e);
+      this.$emit("editOnClick", e);
       console.log('Edit Button Clicked');
     },
     removeOnClick(e) {
-      this.$emit("removeDrawing", e);
+      this.$emit("removeOnClick", e);
       console.log('Remove Button Clicked');
     },
   },
