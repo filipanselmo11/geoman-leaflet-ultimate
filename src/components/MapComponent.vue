@@ -31,6 +31,18 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
+// const _actions = [
+//   'cancel',
+//   {
+//     text: 'finish',
+//     onClick: () => {
+//       this.map.on('pm:create', (e) => {
+//         console.log('EVENT ', e);
+//       })
+//     }
+//   }
+// ];
+
 export default {
   components: { MapModal },
   name: "MapComponent",
@@ -107,6 +119,13 @@ export default {
         allowSelfIntersection: false,
         finishOn: "dblclick",
       });
+
+      this.map.pm.Toolbar.copyDrawControl('Rectangle', {
+        name: 'RectangleCopy',
+        block: 'custom',
+        title: 'Display text on hover button',
+      });
+      // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
     mapDialogOnClick(e, type) {
