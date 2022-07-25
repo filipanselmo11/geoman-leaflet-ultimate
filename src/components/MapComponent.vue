@@ -58,19 +58,23 @@ export default {
     this.initMap();
     //Draw Create
     this.map.on("pm:create", function (e) {
-      var layer = e.layer;
-      console.log("LAYER ", layer);
-      if (layer instanceof L.Circle) {
-        layer.on("click", function (e) {
-        _this.mapMenuOnClick(e, L.Circle);
+      // var coordinates = [];
+      var shape = e.shape;
+      // console.log("LAYER ", layer);
+      if (shape === 'Circle') {
+        // coordinates.push(this.map.getLatLng());
+        e.layer.on("click", function (e) {
+          _this.mapMenuOnClick(e, L.Circle);
         });
-      } else if (layer instanceof L.Polygon) {
-        layer.on("click", function (e) {
+      } else if (shape === 'Polygon') {
+        // coordinates.push(this.map.getLatLng());
+        e.layer.on("click", function (e) {
           _this.mapMenuOnClick(e, L.Polygon);
         });
-      } else if (layer instanceof L.Rectangle) {
-        layer.on("click", function (e) {
-          _this.mapMenuOnClick(e, L.Rectangle);
+      } else if (shape === 'Rectangle') {
+        // coordinates.push(this.map.getLatLng());
+        e.layer.on("click", function (e) {
+          _this.mapMenuOnClick(e, L.Polygon);
         });
       }
     });
@@ -127,20 +131,31 @@ export default {
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
-    mapMenuOnClick(e, type) {
+    mapMenuOnClick(e, type){
       var shape = e.shape;
-      console.log("mapDialogOnClick", e, type);
-      if (shape === "Circle") {
+      console.log('mapMenuOnClick ', e, type);
+      if(shape === 'Circle'){
         this.map.setView(e.target.getLatLng());
-        this.mapMenu = true;
-      } else if (shape === "Polygon") {
+      } else if(shape === 'Polygon' || shape === 'Rectangle'){
         this.map.setView(e.target.getBounds().getCenter());
-        this.mapMenu = true;
-      } else if (shape === "Rectangle") {
-        this.map.setView(e.target.getBounds().getCenter());
-        this.mapMenu = true;
       }
+      this.mapMenu = true;
     },
+
+    // mapMenuOnClick(e, type) {
+    //   var shape = e.shape;
+    //   console.log("mapDialogOnClick", e, type);
+    //   if (shape === "Circle") {
+    //     this.map.setView(e.target.getLatLng());
+    //     this.mapMenu = true;
+    //   } else if (shape === "Polygon") {
+    //     this.map.setView(e.target.getBounds().getCenter());
+    //     this.mapMenu = true;
+    //   } else if (shape === "Rectangle") {
+    //     this.map.setView(e.target.getBounds().getCenter());
+    //     this.mapMenu = true;
+    //   }
+    // },
 
     editarOnClick(){
 

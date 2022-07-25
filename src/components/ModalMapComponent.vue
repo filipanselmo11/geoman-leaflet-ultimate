@@ -12,14 +12,13 @@
           <v-list-item>
             <v-spacer></v-spacer>
             <v-list-item-action>
-              <v-btn @click="menu = false">
+              <!-- <v-icon @click="menu = false">mdi-close-box</v-icon> -->
+              <v-btn @click="menu = false" rounded>
                 <v-icon>mdi-close-box</v-icon>
               </v-btn>
             </v-list-item-action>
           </v-list-item>
         </v-list>
-
-        <v-divider></v-divider>
 
         <v-list>
           <v-list-item @click="editarOnClick">
@@ -41,9 +40,6 @@
             <v-list-item-title>Remover Desenho</v-list-item-title>
           </v-list-item>
         </v-list>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-        </v-card-actions>
       </v-card>
     </v-menu>
   </div>
@@ -105,4 +101,29 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.v-list.v-sheet.theme--dark{
+  background: #2F4966 !important;
+}
+
+/*.v-icon.notranslate.v-icon--link.mdi.mdi-close-box.theme--dark::before {
+  position: absolute !important;
+  width: 22px !important;
+  height: 22px !important;
+  left: 1024px !important;
+  top: 345px !important;
+
+  background: #17304D !important;
+}*/
+
+/*.v-btn.v-btn--is-elevated.v-btn--has-bg.v-btn--rounded.theme--dark.v-size--default{
+  position: absolute !important;
+  width: 22px !important;
+  height: 22px !important;
+  left: 1024px !important;
+  top: 345px !important;
+
+  background: orange !important;
+}*/
+
+</style>
