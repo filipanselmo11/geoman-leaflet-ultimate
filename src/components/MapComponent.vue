@@ -1,13 +1,13 @@
 <template>
   <div id="map-wrapper">
     <div ref="mapElementMonitoringRef" class="map" />
-    <map-modal
-      :map-dialog="mapDialog"
-      @editOnClick="editOnClick"
-      @removeOnClick="removeOnClick"
-      @mapDialogClose="eventHandlerMapDialogClose"
-    ></map-modal>
-    <!-- <other-modal-component @openModal="openModal"></other-modal-component> -->
+    <modal-map-component
+      :mapMenu="mapMenu"
+      @editarOnclick="editarOnClick"
+      @atribuirEventoOnClick="atribuirEventoOnClick"
+      @atribuirCategoriaOnClick="atribuirCategoriaOnClick"
+      @removerDesenhoOnClick="removerDesenhoOnClick"
+    ></modal-map-component>
   </div>
 </template>
 
@@ -18,9 +18,7 @@ import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-// import OtherModalComponent from "./OtherModalComponent.vue";
-
-import MapModal from "./MapModal.vue";
+import ModalMapComponent from "./ModalMapComponent.vue";
 
 const L = window["L"];
 
@@ -44,13 +42,14 @@ L.Icon.Default.mergeOptions({
 // ];
 
 export default {
-  components: { MapModal },
+  components: { ModalMapComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
     map: null,
     tileLayer: null,
     mapDialog: false,
+    mapMenu: false,
     layerControl: null,
     // editableLayers: null,
   }),
@@ -63,15 +62,15 @@ export default {
       console.log("LAYER ", layer);
       if (layer instanceof L.Circle) {
         layer.on("click", function (e) {
-          _this.mapDialogOnClick(e, L.Circle);
+        _this.mapMenuOnClick(e, L.Circle);
         });
       } else if (layer instanceof L.Polygon) {
         layer.on("click", function (e) {
-          _this.mapDialogOnClick(e, L.Polygon);
+          _this.mapMenuOnClick(e, L.Polygon);
         });
       } else if (layer instanceof L.Rectangle) {
         layer.on("click", function (e) {
-          _this.mapDialogOnClick(e, L.Rectangle);
+          _this.mapMenuOnClick(e, L.Rectangle);
         });
       }
     });
@@ -120,47 +119,77 @@ export default {
         finishOn: "dblclick",
       });
 
-      this.map.pm.Toolbar.copyDrawControl('Rectangle', {
-        name: 'RectangleCopy',
-        block: 'custom',
-        title: 'Display text on hover button',
+      this.map.pm.Toolbar.copyDrawControl("Rectangle", {
+        name: "RectangleCopy",
+        block: "custom",
+        title: "Display text on hover button",
       });
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
-    mapDialogOnClick(e, type) {
+    mapMenuOnClick(e, type) {
       var shape = e.shape;
-      console.log("mapDialogOnClick ", e, type);
+      console.log("mapDialogOnClick", e, type);
       if (shape === "Circle") {
-        this.mapDialog = true;
-        // this.map.setView(e.target.getLatLng());
+        this.map.setView(e.target.getLatLng());
+        this.mapMenu = true;
       } else if (shape === "Polygon") {
-        this.mapDialog = true;
-        // this.map.setView(e.target.getBounds().getCenter());
+        this.map.setView(e.target.getBounds().getCenter());
+        this.mapMenu = true;
       } else if (shape === "Rectangle") {
-        this.mapDialog = true;
-        // this.map.setView(e.target.getBounds().getCenter());
+        this.map.setView(e.target.getBounds().getCenter());
+        this.mapMenu = true;
       }
-      // if (shape === "Circle") {
-      //   this.map.setView(e.target.getLatLng());
-      //   console.log("LAT LON ", e.target.getLatLng());
-      // } else if (shape === "Polygon" || shape === "Rectangle") {
-      //   this.map.setView(e.target.getBounds().getCenter());
-      //   console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
-      // }
-      // this.mapDialog = true;
     },
 
+    editarOnClick(){
+
+    },
+    atribuirEventoOnClick(){
+
+    },
+
+    atribuirCategoriaOnClick() {
+
+    },
+
+    removerDesenhoOnClick(){
+
+    },
+
+    // mapDialogOnClick(e, type) {
+    //   var shape = e.shape;
+    //   console.log("mapDialogOnClick ", e, type);
+    //   if (shape === "Circle") {
+    //     this.mapDialog = true;
+    //     // this.map.setView(e.target.getLatLng());
+    //   } else if (shape === "Polygon") {
+    //     this.mapDialog = true;
+    //     // this.map.setView(e.target.getBounds().getCenter());
+    //   } else if (shape === "Rectangle") {
+    //     this.mapDialog = true;
+    //     // this.map.setView(e.target.getBounds().getCenter());
+    //   }
+    //   // if (shape === "Circle") {
+    //   //   this.map.setView(e.target.getLatLng());
+    //   //   console.log("LAT LON ", e.target.getLatLng());
+    //   // } else if (shape === "Polygon" || shape === "Rectangle") {
+    //   //   this.map.setView(e.target.getBounds().getCenter());
+    //   //   console.log("BOUNDS CENTER ", e.target.getBounds().getCenter());
+    //   // }
+    //   // this.mapDialog = true;
+    // },
+
     editOnClick() {
-      const editElement = document.getElementsByClassName('leaflet-pm-icon-edit');
+      const editElement = document.getElementsByClassName("leaflet-pm-icon-edit");
       editElement[0].click(() => {
-        this.map.on('pm:editend', (e) => {
-          console.log('Edit End ', e);
-        })
+        this.map.on("pm:editend", (e) => {
+          console.log("Edit End ", e);
+        });
       });
     },
     removeOnClick() {
-      const removeElement = document.getElementsByClassName('leaflet-pm-icon-delete');
+      const removeElement = document.getElementsByClassName("leaflet-pm-icon-delete");
       removeElement[0].click(() => {});
     },
     eventHandlerMapDialogClose(reply) {

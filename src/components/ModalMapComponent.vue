@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-  <!-- 
+    <!-- 
     <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x</v-menu>
    -->
     <v-menu v-model="menu" :nudge-width="200" offset-x>
@@ -22,63 +22,44 @@
         <v-divider></v-divider>
 
         <v-list>
-            <v-list-item @click="editarOnClick">
-                <v-list-item-title>Editar Desenho</v-list-item-title>
-            </v-list-item>
-        </v-list>
-          <v-list>
-            <v-list-item @click="editarOnClick">
-                <v-list-item-title>Atribuir Evento</v-list-item-title>
-            </v-list-item>
-        </v-list>
-          <v-list>
-            <v-list-item @click="editarOnClick">
-                <v-list-item-title>Atribuir Categoria</v-list-item-title>
-            </v-list-item>
-        </v-list>
-          <v-list>
-            <v-list-item @click="editarOnClick">
-                <v-list-item-title>Remover Desenho</v-list-item-title>
-            </v-list-item>
-        </v-list>
-        
-        <!-- <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index" @click="() => {
-          }">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item @click="editarOnClick">
+            <v-list-item-title>Editar Desenho</v-list-item-title>
           </v-list-item>
-        </v-list> -->
+        </v-list>
+        <v-list>
+          <v-list-item @click="atribuirEventoOnClick">
+            <v-list-item-title>Atribuir Evento</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <v-list>
+          <v-list-item @click="atribuirCategoriaOnClick">
+            <v-list-item-title>Atribuir Categoria</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <v-list>
+          <v-list-item @click="removerDesenhoOnClick">
+            <v-list-item-title>Remover Desenho</v-list-item-title>
+          </v-list-item>
+        </v-list>
         <v-card-actions>
           <v-spacer></v-spacer>
         </v-card-actions>
-
-        <!-- <v-btn text @click="menu = false"> Cancel</v-btn>
-        <v-btn color="primary" text @click="menu = false">Save</v-btn> -->
       </v-card>
     </v-menu>
   </div>
-  <!-- <v-row justify="center">
-    <v-menu bottom offset-x>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn class="ma-2" v-bind="attrs" v-on="on">MENU</v-btn>
-      </template>
-      <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index" @click="() => {}">
-            <v-list-item-title>{{ item.title }}</v-list-item-title> 
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </v-row> -->
 </template>
 
 <script>
 export default {
   name: "ModalMapComponent",
+  props: {
+    mapMenu: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => ({
-    fav: true,
-    menu: true,
-    message: false,
-    hints: true,
+    menu: false,
     items: [
       {
         title: "Editar Desenho",
@@ -95,20 +76,32 @@ export default {
     ],
   }),
 
-  methods:{
-    editarOnClick(){
-        console.log('Editar Desenho Clicked');
-    },
-    atribuirOnClick(){
-        console.log('Atribuir Evento Clicked');
-    },
-    atribuirCategoriaOnClick() {
-        console.log('Atribuir Categoria Clicked');
-    },
-    removerDesenhoOnClick(){
-        console.log('Remover Desenho Clicked');
+  watch:{
+    mapMenu(val){
+      if(val){
+        this.menu = val;
+      }
     }
-  }
+  },
+
+  methods: {
+    editarOnClick(e) {
+      this.$emit('editarOnClick', e);
+      console.log("Editar Desenho Clicked");
+    },
+    atribuirEventoOnClick(e) {
+      this.$emit('atribuirEventoOnClick',e);
+      console.log("Atribuir Evento Clicked");
+    },
+    atribuirCategoriaOnClick(e) {
+      this.$emit('atribuirCategoriaOnClick',e);
+      console.log("Atribuir Categoria Clicked");
+    },
+    removerDesenhoOnClick(e) {
+      this.$emit('removerDesenhoOnClick',e);
+      console.log("Remover Desenho Clicked");
+    },
+  },
 };
 </script>
 
