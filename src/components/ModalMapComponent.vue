@@ -18,24 +18,17 @@
               </v-btn>
             </v-list-item-action>
           </v-list-item>
-        </v-list>
 
-        <v-list>
           <v-list-item @click="editarOnClick">
             <v-list-item-title>Editar Desenho</v-list-item-title>
           </v-list-item>
-        </v-list>
-        <v-list>
           <v-list-item @click="atribuirEventoOnClick">
             <v-list-item-title>Atribuir Evento</v-list-item-title>
           </v-list-item>
-        </v-list>
-        <v-list>
+
           <v-list-item @click="atribuirCategoriaOnClick">
             <v-list-item-title>Atribuir Categoria</v-list-item-title>
           </v-list-item>
-        </v-list>
-        <v-list>
           <v-list-item @click="removerDesenhoOnClick">
             <v-list-item-title>Remover Desenho</v-list-item-title>
           </v-list-item>
@@ -72,29 +65,30 @@ export default {
     ],
   }),
 
-  watch:{
-    mapMenu(val){
-      if(val){
+  watch: {
+    mapMenu(val) {
+      if (val) {
         this.menu = val;
+        console.log('WATCH VALUE ', this.menu);
       }
-    }
+    },
   },
 
   methods: {
     editarOnClick(e) {
-      this.$emit('editarOnClick', e);
+      this.$emit("editarOnClick", e);
       console.log("Editar Desenho Clicked");
     },
     atribuirEventoOnClick(e) {
-      this.$emit('atribuirEventoOnClick',e);
+      this.$emit("atribuirEventoOnClick", e);
       console.log("Atribuir Evento Clicked");
     },
     atribuirCategoriaOnClick(e) {
-      this.$emit('atribuirCategoriaOnClick',e);
+      this.$emit("atribuirCategoriaOnClick", e);
       console.log("Atribuir Categoria Clicked");
     },
     removerDesenhoOnClick(e) {
-      this.$emit('removerDesenhoOnClick',e);
+      this.$emit("removerDesenhoOnClick", e);
       console.log("Remover Desenho Clicked");
     },
   },
@@ -102,8 +96,8 @@ export default {
 </script>
 
 <style scoped>
-.v-list.v-sheet.theme--dark{
-  background: #2F4966 !important;
+.v-list.v-sheet.theme--dark {
+  background: #2f4966 !important;
 }
 
 /*.v-icon.notranslate.v-icon--link.mdi.mdi-close-box.theme--dark::before {
@@ -125,5 +119,4 @@ export default {
 
   background: orange !important;
 }*/
-
 </style>

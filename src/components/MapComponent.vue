@@ -63,18 +63,18 @@ export default {
       // console.log("LAYER ", layer);
       if (shape === 'Circle') {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e, L.Circle);
+        e.layer.on("click", function () {
+          _this.mapMenuOnClick(shape);
         });
       } else if (shape === 'Polygon') {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e, L.Polygon);
+        e.layer.on("click", function () {
+          _this.mapMenuOnClick(shape);
         });
       } else if (shape === 'Rectangle') {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e, L.Polygon);
+        e.layer.on("click", function () {
+          _this.mapMenuOnClick(shape);
         });
       }
     });
@@ -131,31 +131,20 @@ export default {
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
-    mapMenuOnClick(e, type){
-      var shape = e.shape;
-      console.log('mapMenuOnClick ', e, type);
+
+    mapMenuOnClick(shape){
       if(shape === 'Circle'){
-        this.map.setView(e.target.getLatLng());
-      } else if(shape === 'Polygon' || shape === 'Rectangle'){
-        this.map.setView(e.target.getBounds().getCenter());
+        this.mapMenu = !this.mapMenu;
+        // this.map.setView(e.target.getLatLng());
+      } else if(shape === 'Polygon'){
+        this.mapMenu = !this.mapMenu;
+        // this.map.setView(e.target.getBounds().getCenter());
+      } else if(shape === 'Rectangle') {
+        this.mapMenu = !this.mapMenu;
+        // this.map.setView(e.target.getBounds().getCenter());
       }
-      this.mapMenu = true;
     },
 
-    // mapMenuOnClick(e, type) {
-    //   var shape = e.shape;
-    //   console.log("mapDialogOnClick", e, type);
-    //   if (shape === "Circle") {
-    //     this.map.setView(e.target.getLatLng());
-    //     this.mapMenu = true;
-    //   } else if (shape === "Polygon") {
-    //     this.map.setView(e.target.getBounds().getCenter());
-    //     this.mapMenu = true;
-    //   } else if (shape === "Rectangle") {
-    //     this.map.setView(e.target.getBounds().getCenter());
-    //     this.mapMenu = true;
-    //   }
-    // },
 
     editarOnClick(){
 
