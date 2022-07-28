@@ -9,20 +9,20 @@
     <br />
 
     <v-main>
+      <!-- <other-map-component></other-map-component> -->
       <map-component></map-component>
     </v-main>
   </v-app>
 </template>
 
 <script>
+// import OtherMapComponent from './components/OtherMapComponent.vue';
 import MapComponent from "./components/MapComponent.vue";
 
 export default {
   name: "App",
 
-  components: {
-    MapComponent,
-  },
+  components: {MapComponent},
 
   data: () => ({}),
 };

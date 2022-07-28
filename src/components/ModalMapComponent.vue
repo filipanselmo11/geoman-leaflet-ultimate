@@ -3,7 +3,7 @@
     <!-- 
     <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x</v-menu>
    -->
-    <v-menu v-model="menu" :nudge-width="200" offset-x>
+    <v-menu v-model="menu" offset-x>
       <!-- <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">Menu as Popover</v-btn>
       </template> -->
@@ -67,10 +67,16 @@ export default {
 
   watch: {
     mapMenu(val) {
-      if (val) {
-        this.menu = val;
-        console.log('WATCH VALUE ', this.menu);
-      }
+      setTimeout(() => {
+        if (val) {
+          this.menu = val;
+          console.log("Watch VALUE ", this.menu);
+        }
+      }, 100);
+      // if (val) {
+      //   this.menu = val;
+      //   console.log('WATCH VALUE ', this.menu);
+      // }
     },
   },
 

@@ -1,13 +1,14 @@
 <template>
-  <div id="map-wrapper">
-    <div ref="mapElementMonitoringRef" class="map" />
-    <modal-map-component
-      :mapMenu="mapMenu"
-      @editarOnclick="editarOnClick"
-      @atribuirEventoOnClick="atribuirEventoOnClick"
-      @atribuirCategoriaOnClick="atribuirCategoriaOnClick"
-      @removerDesenhoOnClick="removerDesenhoOnClick"
-    ></modal-map-component>
+    <div id="map-wrapper">
+      <div ref="mapElementMonitoringRef" class="map"></div>
+      <button-edit-component></button-edit-component>
+      <modal-map-component
+        :mapMenu="mapMenu"
+        @editarOnclick="editarOnClick"
+        @atribuirEventoOnClick="atribuirEventoOnClick"
+        @atribuirCategoriaOnClick="atribuirCategoriaOnClick"
+        @removerDesenhoOnClick="removerDesenhoOnClick"
+      ></modal-map-component>
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import "leaflet/dist/leaflet.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import ModalMapComponent from "./ModalMapComponent.vue";
+import ButtonEditComponent from "./ButtonEditComponent.vue";
 
 const L = window["L"];
 
@@ -42,7 +44,7 @@ L.Icon.Default.mergeOptions({
 // ];
 
 export default {
-  components: { ModalMapComponent },
+  components: { ModalMapComponent, ButtonEditComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -61,17 +63,17 @@ export default {
       // var coordinates = [];
       var shape = e.shape;
       // console.log("LAYER ", layer);
-      if (shape === 'Circle') {
+      if (shape === "Circle") {
         // coordinates.push(this.map.getLatLng());
         e.layer.on("click", function () {
           _this.mapMenuOnClick(shape);
         });
-      } else if (shape === 'Polygon') {
+      } else if (shape === "Polygon") {
         // coordinates.push(this.map.getLatLng());
         e.layer.on("click", function () {
           _this.mapMenuOnClick(shape);
         });
-      } else if (shape === 'Rectangle') {
+      } else if (shape === "Rectangle") {
         // coordinates.push(this.map.getLatLng());
         e.layer.on("click", function () {
           _this.mapMenuOnClick(shape);
@@ -102,7 +104,7 @@ export default {
 
     setDrawingTools() {
       this.map.pm.addControls({
-        position: "topleft",
+        position: "bottomright",
         drawControls: true,
         editControls: true,
         optionsControls: true,
@@ -131,35 +133,23 @@ export default {
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
-
-    mapMenuOnClick(shape){
-      if(shape === 'Circle'){
-        this.mapMenu = !this.mapMenu;
-        // this.map.setView(e.target.getLatLng());
-      } else if(shape === 'Polygon'){
-        this.mapMenu = !this.mapMenu;
-        // this.map.setView(e.target.getBounds().getCenter());
-      } else if(shape === 'Rectangle') {
-        this.mapMenu = !this.mapMenu;
-        // this.map.setView(e.target.getBounds().getCenter());
+    mapMenuOnClick(e, shape) {
+      if (shape === "Circle") {
+        this.map.setView(e.target.getLatLng());
+      } else if (shape === "Polygon") {
+        this.map.setView(e.target.getBounds().getCenter());
+      } else if (shape === "Rectangle") {
+        this.map.setView(e.target.getBounds().getCenter());
       }
+      this.mapMenu = !this.mapMenu;
     },
 
+    editarOnClick() {},
+    atribuirEventoOnClick() {},
 
-    editarOnClick(){
+    atribuirCategoriaOnClick() {},
 
-    },
-    atribuirEventoOnClick(){
-
-    },
-
-    atribuirCategoriaOnClick() {
-
-    },
-
-    removerDesenhoOnClick(){
-
-    },
+    removerDesenhoOnClick() {},
 
     // mapDialogOnClick(e, type) {
     //   var shape = e.shape;
