@@ -19,17 +19,17 @@
             </v-list-item-action>
           </v-list-item>
 
-          <v-list-item @click="editarOnClick">
+          <v-list-item @click="editOnClick">
             <v-list-item-title>Editar Desenho</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="atribuirEventoOnClick">
+          <v-list-item @click="eventOnClick">
             <v-list-item-title>Atribuir Evento</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="atribuirCategoriaOnClick">
+          <v-list-item @click="categoryOnClick">
             <v-list-item-title>Atribuir Categoria</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="removerDesenhoOnClick">
+          <v-list-item @click="removeOnClick">
             <v-list-item-title>Remover Desenho</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -81,21 +81,25 @@ export default {
   },
 
   methods: {
-    editarOnClick(e) {
-      this.$emit("editarOnClick", e);
-      console.log("Editar Desenho Clicked");
+    editOnClick(e) {
+      this.$emit("editOnClick", e);
+      console.log("Edit Clicked");
+      this.menu = false;
     },
-    atribuirEventoOnClick(e) {
-      this.$emit("atribuirEventoOnClick", e);
-      console.log("Atribuir Evento Clicked");
+    eventOnClick(e) {
+      this.$emit("eventOnClick", e);
+      console.log("Atribuir Event Clicked");
+      this.menu = false;
     },
-    atribuirCategoriaOnClick(e) {
-      this.$emit("atribuirCategoriaOnClick", e);
+    categoryOnClick(e) {
+      this.$emit("categoryOnClick", e);
       console.log("Atribuir Categoria Clicked");
+      this.menu = false;
     },
-    removerDesenhoOnClick(e) {
-      this.$emit("removerDesenhoOnClick", e);
-      console.log("Remover Desenho Clicked");
+    removeOnClick(e) {
+      this.$emit("removeOnClick", e);
+      console.log("Remove Clicked");
+      this.menu = false;
     },
   },
 };

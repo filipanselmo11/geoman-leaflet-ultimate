@@ -1,13 +1,12 @@
 <template>
     <div id="map-wrapper">
       <div ref="mapElementMonitoringRef" class="map"></div>
-      <button-edit-component></button-edit-component>
       <modal-map-component
         :mapMenu="mapMenu"
-        @editarOnclick="editarOnClick"
-        @atribuirEventoOnClick="atribuirEventoOnClick"
-        @atribuirCategoriaOnClick="atribuirCategoriaOnClick"
-        @removerDesenhoOnClick="removerDesenhoOnClick"
+        @editOnClick="editarOnClick"
+        @eventOnClick="atribuirEventoOnClick"
+        @categoryOnClick="atribuirCategoriaOnClick"
+        @removeOnClick="removerDesenhoOnClick"
       ></modal-map-component>
   </div>
 </template>
@@ -20,7 +19,6 @@ import "leaflet/dist/leaflet.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import ModalMapComponent from "./ModalMapComponent.vue";
-import ButtonEditComponent from "./ButtonEditComponent.vue";
 
 const L = window["L"];
 
@@ -44,7 +42,7 @@ L.Icon.Default.mergeOptions({
 // ];
 
 export default {
-  components: { ModalMapComponent, ButtonEditComponent },
+  components: { ModalMapComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -65,18 +63,18 @@ export default {
       // console.log("LAYER ", layer);
       if (shape === "Circle") {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function () {
-          _this.mapMenuOnClick(shape);
+        e.layer.on("click", function (e) {
+          _this.mapMenuOnClick(e,shape);
         });
       } else if (shape === "Polygon") {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function () {
-          _this.mapMenuOnClick(shape);
+        e.layer.on("click", function (e) {
+          _this.mapMenuOnClick(e,shape);
         });
       } else if (shape === "Rectangle") {
         // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function () {
-          _this.mapMenuOnClick(shape);
+        e.layer.on("click", function (e) {
+          _this.mapMenuOnClick(e,shape);
         });
       }
     });
@@ -177,9 +175,6 @@ export default {
     editOnClick() {
       const editElement = document.getElementsByClassName("leaflet-pm-icon-edit");
       editElement[0].click(() => {
-        this.map.on("pm:editend", (e) => {
-          console.log("Edit End ", e);
-        });
       });
     },
     removeOnClick() {
