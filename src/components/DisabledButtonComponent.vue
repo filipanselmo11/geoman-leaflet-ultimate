@@ -2,7 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="text-center">
-        <v-btn
+        <v-btn color="primary--text text--darken-4" :disabled="disabled">Botao-1</v-btn>
+        <v-btn color="accent" @click="disabled = !disabled">Botao-2</v-btn>
+        <!-- <v-btn
           color="primary--text text--darken-4"
           :disabled="disabled"
           @click="alert"
@@ -11,11 +13,11 @@
         </v-btn>
         <v-btn color="accent" @click="disabled = !disabled">
           Toggle Disabled
-        </v-btn>
+        </v-btn> -->
       </v-col>
-      <v-col class="px-8">
+      <!-- <v-col class="px-8">
         This shows how to customize the color of a disabled button.
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
@@ -35,7 +37,5 @@ export default {
 </script>
 
 <style scoped>
-.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
-  color: fuchsia !important;
-}
+
 </style>
