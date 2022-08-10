@@ -9,29 +9,31 @@
     <br />
 
     <v-main>
-      <disabled-button-component></disabled-button-component>
+      <!-- <other-dial-component></other-dial-component> -->
+      <!-- <disabled-button-component></disabled-button-component> -->
       <!-- <playground-component></playground-component> -->
       <!-- <other-map-component></other-map-component> -->
       <!-- <map-component></map-component> -->
-      <!-- <speedial-component></speedial-component> -->
+      <speedial-component></speedial-component>
       <!-- <dial-component></dial-component> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-import DisabledButtonComponent from './components/DisabledButtonComponent.vue';
+// import OtherDialComponent from './components/OtherDialComponent.vue';
+// import DisabledButtonComponent from './components/DisabledButtonComponent.vue';
 // import PlaygroundComponent from './components/PlaygroundComponent.vue';
 // import OtherMapComponent from './components/OtherMapComponent.vue';
 // import MapComponent from "./components/MapComponent.vue";
-// import SpeedialComponent from "./components/SpeedialComponent.vue";
+import SpeedialComponent from "./components/SpeedialComponent.vue";
 
 // import DialComponent from "./components/DialComponent.vue";
 
 export default {
   name: "App",
 
-  components: { DisabledButtonComponent },
+  components: { SpeedialComponent },
 
   data: () => ({}),
 };
