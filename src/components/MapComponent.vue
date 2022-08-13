@@ -1,33 +1,33 @@
 <template>
-    <div id="map-wrapper">
-      <div ref="mapElementMonitoringRef" class="map"></div>
-      <modal-map-component
-        :mapMenu="mapMenu"
-        @editOnClick="editarOnClick"
-        @eventOnClick="atribuirEventoOnClick"
-        @categoryOnClick="atribuirCategoriaOnClick"
-        @removeOnClick="removerDesenhoOnClick"
-      ></modal-map-component>
+  <div id="map-wrapper">
+    <div ref="mapElementMonitoringRef" class="map">
+      <button-action-component :showButton="showButton"></button-action-component>
+    </div>
+    <modal-map-component
+      :mapMenu="mapMenu"
+      @editOnClick="editarOnClick"
+      @eventOnClick="atribuirEventoOnClick"
+      @categoryOnClick="atribuirCategoriaOnClick"
+      @removeOnClick="removerDesenhoOnClick"
+    ></modal-map-component>
+    <!-- <div id="sidebar" class="leaflet-sidebar">
+      <button-action-component :showButton="showButton"></button-action-component>
+    </div> -->
   </div>
 </template>
 
 <script>
 import "leaflet";
+import "leaflet-sidebar-v2";
 import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import ModalMapComponent from "./ModalMapComponent.vue";
+import ButtonActionComponent from "./ButtonActionComponent.vue";
 
 const L = window["L"];
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});
 
 // const _actions = [
 //   'cancel',
@@ -42,49 +42,53 @@ L.Icon.Default.mergeOptions({
 // ];
 
 export default {
-  components: { ModalMapComponent },
+  components: { ModalMapComponent, ButtonActionComponent },
   name: "MapComponent",
   // props:{},
   data: () => ({
+    leftSidebar: L.control.sidebar({
+      autopan: false,
+      closeButton: true,
+      container: "sidebar",
+      position: "left",
+    }),
     map: null,
     tileLayer: null,
     mapDialog: false,
     mapMenu: false,
     layerControl: null,
+    showButton: false,
     // editableLayers: null,
   }),
   mounted() {
-    var _this = this;
+    // var _this = this;
     this.initMap();
     //Draw Create
-    this.map.on("pm:create", function (e) {
-      // var coordinates = [];
-      var shape = e.shape;
-      // console.log("LAYER ", layer);
-      if (shape === "Circle") {
-        // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e,shape);
-        });
-      } else if (shape === "Polygon") {
-        // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e,shape);
-        });
-      } else if (shape === "Rectangle") {
-        // coordinates.push(this.map.getLatLng());
-        e.layer.on("click", function (e) {
-          _this.mapMenuOnClick(e,shape);
-        });
-      }
+    // this.map.on('pm:create', ({ layer }) => {
+    //   layer.on('pm:drawstart', e => {
+    //     console.log('Draw Start event ', e);
+    //   });
+    //   layer.on('pm:edit', e => {
+    //     console.log('Edit Event ', e);
+    //   });
+    // });
+    this.map.on("pm:drawstart", (e) => {
+      console.log("Draw Start");
+      console.log("E ", e);
+      this.showButton = !this.showButton;
+    });
+
+    this.map.on("pm:drawend", (e) => {
+      console.log("Draw End");
+      console.log("EVENT ", e);
+      this.showButton = false;
     });
   },
   methods: {
     initMap() {
-      this.map = L.map(this.$refs.mapElementMonitoringRef, { pmIgnore: false }).setView(
-        [-25.441105, -49.276855],
-        13
-      );
+      this.map = L.map(this.$refs.mapElementMonitoringRef, {
+        pmIgnore: false,
+      }).setView([-25.441105, -49.276855], 13);
       // console.log("Right Side bar ", this.rightSidebar);
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
@@ -96,7 +100,7 @@ export default {
       );
 
       this.tileLayer.addTo(this.map);
-
+      this.leftSidebar.addTo(this.map);
       this.setDrawingTools();
     },
 
@@ -173,12 +177,15 @@ export default {
     // },
 
     editOnClick() {
-      const editElement = document.getElementsByClassName("leaflet-pm-icon-edit");
-      editElement[0].click(() => {
-      });
+      const editElement = document.getElementsByClassName(
+        "leaflet-pm-icon-edit"
+      );
+      editElement[0].click(() => {});
     },
     removeOnClick() {
-      const removeElement = document.getElementsByClassName("leaflet-pm-icon-delete");
+      const removeElement = document.getElementsByClassName(
+        "leaflet-pm-icon-delete"
+      );
       removeElement[0].click(() => {});
     },
     eventHandlerMapDialogClose(reply) {
@@ -217,5 +224,17 @@ export default {
 
 #map-wrapper {
   height: calc(100vh - 90px);
+}
+.leaflet-sidebar {
+  position: relative;
+  top: 91px;
+  right: 10px;
+  max-width: 800px;
+  height: 67vh;
+  z-index: 2000;
+  background-color: transparent;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid red;
 }
 </style>
