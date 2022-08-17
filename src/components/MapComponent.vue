@@ -95,11 +95,11 @@ export default {
 
     this.map.on('pm:remove', (e) => {
       console.log('PM REMOVE ',e);
-    })
+    });
 
-    // this.map.on("pm:edit", (e) => {
-    //   console.log("Edit Event", e);
-    // });
+    this.map.on("pm:edit", (e) => {
+      console.log("Edit Event", e);
+    });
   },
   methods: {
     initMap() {
