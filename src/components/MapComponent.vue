@@ -65,22 +65,15 @@ export default {
   mounted() {
     // var _this = this;
     this.initMap();
-    //Draw Create
-    // this.map.on("pm:create", (e) => {
-    //   e.layer.on("pm:edit", ({ layer }) => {
-    //     this.showButton = !this.showButton;
-    //     console.log("edit Event ", layer);
-    //   });
-    //   this.showButton = false;
-    // });
-    // this.map.on('pm:create', ({ layer }) => {
-    //   layer.on('pm:drawstart', e => {
-    //     console.log('Draw Start event ', e);
-    //   });
-    //   layer.on('pm:edit', e => {
-    //     console.log('Edit Event ', e);
-    //   });
-    // });
+    this.map.on('pm:create', (e) => {
+      e.layer.on('pm:edit', (e) => {
+        console.log('Edit Event', e);
+      });
+      e.layer.on('pm:remove', (e) => {
+        this.showButton = true;
+        console.log('Remove Event', e);
+      });
+    });
     this.map.on("pm:drawstart", (e) => {
       console.log("Draw Start");
       console.log("E ", e);
@@ -102,18 +95,18 @@ export default {
     //   console.log(e);
     // });
 
-    this.map.on("pm:remove", (e) => {
-      console.log("REMOVE terminado");
-      console.log("PM REMOVE ", e);
-    });
+    // this.map.on("pm:remove", (e) => {
+    //   console.log("REMOVE terminado");
+    //   console.log("PM REMOVE ", e);
+    // });
 
-    this.map.on('pm:actionclick', (e) => {
-      console.log('ACtion Click ', e);
-    })
+    // this.map.on('pm:actionclick', (e) => {
+    //   console.log('ACtion Click ', e);
+    // })
 
-    this.map.on("pm:edit", (e) => {
-      console.log("Edit Event", e);
-    });
+    // this.map.on("pm:edit", (e) => {
+    //   console.log("Edit Event", e);
+    // });
   },
   methods: {
     initMap() {
