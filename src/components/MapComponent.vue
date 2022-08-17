@@ -65,13 +65,9 @@ export default {
   mounted() {
     // var _this = this;
     this.initMap();
-    this.map.on('pm:create', (e) => {
-      e.layer.on('pm:edit', (e) => {
-        console.log('Edit Event', e);
-      });
-      e.layer.on('pm:remove', (e) => {
-        this.showButton = true;
-        console.log('Remove Event', e);
+    this.map.on("pm:create", (e) => {
+      e.layer.on("pm:edit", function (x) {
+        console.log("edit", x);
       });
     });
     this.map.on("pm:drawstart", (e) => {
