@@ -93,9 +93,23 @@ export default {
       this.showButton = false;
     });
 
-    this.map.on('pm:remove', (e) => {
-      console.log('PM REMOVE ',e);
+    // this.map.on('layerremove', (e) => {
+    //   console.log('Layer remove ', e);
+    // })
+
+    // this.map.on("pm:globalremovalmodetoggled", (e) => {
+    //   console.log('Remove iniciado');
+    //   console.log(e);
+    // });
+
+    this.map.on("pm:remove", (e) => {
+      console.log("REMOVE terminado");
+      console.log("PM REMOVE ", e);
     });
+
+    this.map.on('pm:actionclick', (e) => {
+      console.log('ACtion Click ', e);
+    })
 
     this.map.on("pm:edit", (e) => {
       console.log("Edit Event", e);
