@@ -9,7 +9,8 @@
     <br />
 
     <v-main>
-      <button-menu-component></button-menu-component>
+      <button-component></button-component>
+      <!-- <button-menu-component></button-menu-component> -->
       <!-- <menu-component></menu-component> -->
       <!-- <other-dial-component></other-dial-component> -->
       <!-- <disabled-button-component></disabled-button-component> -->
@@ -23,7 +24,8 @@
 </template>
 
 <script>
-import ButtonMenuComponent from './components/ButtonMenuComponent.vue';
+import ButtonComponent from './components/ButtonComponent.vue';
+// import ButtonMenuComponent from './components/ButtonMenuComponent.vue';
 // import OtherDialComponent from './components/OtherDialComponent.vue';
 // import DisabledButtonComponent from './components/DisabledButtonComponent.vue';
 // import PlaygroundComponent from './components/PlaygroundComponent.vue';
@@ -38,7 +40,7 @@ import ButtonMenuComponent from './components/ButtonMenuComponent.vue';
 export default {
   name: "App",
 
-  components: { ButtonMenuComponent  },
+  components: { ButtonComponent  },
 
   data: () => ({}),
 };
