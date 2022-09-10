@@ -24,6 +24,7 @@ import "leaflet-sidebar-v2";
 import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
+import mapLayers from '@/helpers/mapLayer1';
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import ModalMapComponent from "./ModalMapComponent.vue";
@@ -58,6 +59,7 @@ export default {
     tileLayer: null,
     mapDialog: false,
     mapMenu: false,
+    componentMap: mapLayers,
     layerControl: null,
     showButton: false,
     // editableLayers: null,
