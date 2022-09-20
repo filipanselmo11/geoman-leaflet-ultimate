@@ -5,13 +5,10 @@
         :showButton="showButton"
       ></button-action-component>
     </div>
-    <modal-map-component
-      :mapMenu="mapMenu"
-      @editOnClick="editarOnClick"
-      @eventOnClick="atribuirEventoOnClick"
-      @categoryOnClick="atribuirCategoriaOnClick"
-      @removeOnClick="removerDesenhoOnClick"
-    ></modal-map-component>
+    <map-menu
+      :showMenu="menu"
+      :positionX="x"
+      :positionY="y"></map-menu>
     <!-- <div id="sidebar" class="leaflet-sidebar">
       <button-action-component :showButton="showButton"></button-action-component>
     </div> -->
@@ -24,11 +21,11 @@ import "leaflet-sidebar-v2";
 import "leaflet/dist/leaflet.css";
 // import "leaflet-sidebar-v2";
 // import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
-import mapLayers from '@/helpers/mapLayer1';
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import ModalMapComponent from "./ModalMapComponent.vue";
+// import ModalMapComponent from "./ModalMapComponent.vue";
 import ButtonActionComponent from "./ButtonActionComponent.vue";
+import MapMenu from './MapMenu.vue';
 
 const L = window["L"];
 
@@ -45,7 +42,7 @@ const L = window["L"];
 // ];
 
 export default {
-  components: { ModalMapComponent, ButtonActionComponent },
+  components: {  ButtonActionComponent, MapMenu },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -57,20 +54,33 @@ export default {
     }),
     map: null,
     tileLayer: null,
-    mapDialog: false,
-    mapMenu: false,
-    componentMap: mapLayers,
+    // mapDialog: false,
+    // mapMenu: false,
+    menu: false,
+    x: 0,
+    y: 0,
     layerControl: null,
     showButton: false,
     // editableLayers: null,
   }),
   mounted() {
-    // var _this = this;
+    var _this = this;
     this.initMap();
     this.map.on("pm:create", (e) => {
-      e.layer.on("pm:edit", function (x) {
-        console.log("edit", x);
-      });
+      var shape = e.shape;
+      if (shape === "Circle") {
+        e.layer.on("click", function (e) {
+          _this.showMenuMap(e);
+        });
+      } else if (shape === "Polygon") {
+        e.layer.on("click", function (e) {
+          _this.showMenuMap(e);
+        });
+      } else if (shape === "Rectangle") {
+        e.layer.on("click", function (e) {
+          _this.showMenuMap(e);
+        });
+      }
     });
     this.map.on("pm:drawstart", (e) => {
       console.log("Draw Start");
@@ -157,16 +167,29 @@ export default {
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
 
-    mapMenuOnClick(e, shape) {
-      if (shape === "Circle") {
-        this.map.setView(e.target.getLatLng());
-      } else if (shape === "Polygon") {
-        this.map.setView(e.target.getBounds().getCenter());
-      } else if (shape === "Rectangle") {
-        this.map.setView(e.target.getBounds().getCenter());
-      }
-      this.mapMenu = !this.mapMenu;
+    showMenuMap(e) {
+      this.menu = false;
+      var container = document.getElementById('map-wrapper');
+      var bounds = container.getBoundingClientRect();
+      var x = e.clientX - bounds.left;
+      var y = e.clientY - bounds.top;
+      // if(x < 0 || y < 0 || x > 300 || y > 300) {
+      // }
+      this.x = x;
+      this.y = y;
+      this.$nextTick(() => this.menu = true);
     },
+
+    // mapMenuOnClick(e, shape) {
+    //   if (shape === "Circle") {
+    //     this.map.setView(e.target.getLatLng());
+    //   } else if (shape === "Polygon") {
+    //     this.map.setView(e.target.getBounds().getCenter());
+    //   } else if (shape === "Rectangle") {
+    //     this.map.setView(e.target.getBounds().getCenter());
+    //   }
+    //   this.mapMenu = !this.mapMenu;
+    // },
 
     editarOnClick() {},
     atribuirEventoOnClick() {},
