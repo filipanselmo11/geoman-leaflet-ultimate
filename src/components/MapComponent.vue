@@ -5,10 +5,7 @@
         :showButton="showButton"
       ></button-action-component>
     </div>
-    <map-menu
-      :showMenu="menu"
-      :positionX="x"
-      :positionY="y"></map-menu>
+    <map-menu :showMenu="menu" :positionX="x" :positionY="y"></map-menu>
     <!-- <div id="sidebar" class="leaflet-sidebar">
       <button-action-component :showButton="showButton"></button-action-component>
     </div> -->
@@ -25,9 +22,16 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 // import ModalMapComponent from "./ModalMapComponent.vue";
 import ButtonActionComponent from "./ButtonActionComponent.vue";
-import MapMenu from './MapMenu.vue';
+import MapMenu from "./MapMenu.vue";
 
 const L = window["L"];
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 // const _actions = [
 //   'cancel',
@@ -42,7 +46,7 @@ const L = window["L"];
 // ];
 
 export default {
-  components: {  ButtonActionComponent, MapMenu },
+  components: { ButtonActionComponent, MapMenu },
   name: "MapComponent",
   // props:{},
   data: () => ({
@@ -61,38 +65,50 @@ export default {
     y: 0,
     layerControl: null,
     showButton: false,
+    L41: undefined,
+    L42: undefined,
+    L43: undefined,
+    L4: undefined,
     // editableLayers: null,
   }),
   mounted() {
     var _this = this;
     this.initMap();
     this.map.on("pm:create", (e) => {
+      // console.log('PM CREATE ', e);
+      const layer = e.layer.pm;
+      console.log("LAYER ", layer);
       var shape = e.shape;
       if (shape === "Circle") {
         e.layer.on("click", function (e) {
           _this.showMenuMap(e);
+          console.log("Circle");
         });
       } else if (shape === "Polygon") {
         e.layer.on("click", function (e) {
           _this.showMenuMap(e);
+          console.log("Polygon");
         });
       } else if (shape === "Rectangle") {
         e.layer.on("click", function (e) {
           _this.showMenuMap(e);
+          console.log("Rectangle");
         });
       }
     });
-    this.map.on("pm:drawstart", (e) => {
-      console.log("Draw Start");
-      console.log("E ", e);
-      this.showButton = !this.showButton;
-    });
+    this.showMarkers();
+    this.setCircles();
+    // this.map.on("pm:drawstart", (e) => {
+    //   console.log("Draw Start ", e);
+    //   console.log("E ", e);
+    //   this.showButton = !this.showButton;
+    // });
 
-    this.map.on("pm:drawend", (e) => {
-      console.log("Draw End");
-      console.log("EVENT ", e);
-      this.showButton = false;
-    });
+    // this.map.on("pm:drawend", (e) => {
+    //   console.log("Draw End ", e);
+    //   console.log("EVENT ", e);
+    //   this.showButton = false;
+    // });
 
     // this.map.on('layerremove', (e) => {
     //   console.log('Layer remove ', e);
@@ -166,10 +182,36 @@ export default {
       });
       // this.map.pm.Draw.RectangleCopy.setPathOptions({color: 'green'});
     },
+    showMarkers() {
+      this.L41 = L.marker([-25.442342022458362, -49.23874344435279]).bindPopup(
+        "Jardim Botânico"
+      );
+      this.L42 = L.marker([
+        -25.435404976601276, -49.236297269873994,
+      ]).bindPopup("MC Donalds");
+      this.L43 = L.marker([
+        -25.445984780397108, -49.218830725788614,
+      ]).bindPopup("Academia Trabalhe Duro");
 
+      this.L4 = L.layerGroup([this.L41, this.L42, this.L43]);
+
+      this.L4.addTo(this.map);
+    },
+    setCircles() {
+      const groupLayers = this.L4.getLayers();
+      groupLayers.forEach(obj => {
+        if (obj instanceof L.Marker) {
+          L.circle(obj.getLatLng(), 1609.34, {
+            color: 'red',
+            fillColor: 'blue'
+          }).addTo(this.map);
+        }
+      });
+      // console.log('Group Layers ', groupLayers);
+    },
     showMenuMap(e) {
       this.menu = false;
-      var container = document.getElementById('map-wrapper');
+      var container = document.getElementById("map-wrapper");
       var bounds = container.getBoundingClientRect();
       var x = e.clientX - bounds.left;
       var y = e.clientY - bounds.top;
@@ -177,7 +219,7 @@ export default {
       // }
       this.x = x;
       this.y = y;
-      this.$nextTick(() => this.menu = true);
+      this.$nextTick(() => (this.menu = true));
     },
 
     // mapMenuOnClick(e, shape) {
