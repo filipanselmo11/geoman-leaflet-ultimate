@@ -68,6 +68,9 @@ export default {
     L41: undefined,
     L42: undefined,
     L43: undefined,
+    L44: undefined,
+    L45: undefined,
+    L46: undefined,
     L4: undefined,
     // editableLayers: null,
   }),
@@ -135,6 +138,8 @@ export default {
   methods: {
     initMap() {
       this.map = L.map(this.$refs.mapElementMonitoringRef, {
+        minZoom: 20,
+        maxZoom: 2,
         pmIgnore: false,
       }).setView([-25.441105, -49.276855], 13);
       // console.log("Right Side bar ", this.rightSidebar);
@@ -192,6 +197,9 @@ export default {
       this.L43 = L.marker([
         -25.445984780397108, -49.218830725788614,
       ]).bindPopup("Academia Trabalhe Duro");
+      this.L44 = L.marker([-25.47334069550606, -49.235996862043464]).bindPopup("Farmácias Nissei");
+      this.L45 = L.marker([-25.493795444436614, -49.22496761874205]).bindPopup("Ginásio de Esportes Apollo");
+      // this.L46 = L.marker();
 
       this.L4 = L.layerGroup([this.L41, this.L42, this.L43]);
 
